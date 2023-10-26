@@ -1,4 +1,4 @@
-﻿@model QuanLyKhoBiaNGK.Models.Product
+﻿@model QuanLyKhoBiaNGK.ViewModels.CreateProductModel
 
 @{
     ViewData["Title"] = "Thêm Hàng Hóa";
@@ -8,10 +8,11 @@
 
 <h4>Product</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="All" class="text-danger"></div>
+<form asp-action="Create">
+    <div class="row">
+        <div class="col-md-6">
+
+            @*<div asp-validation-summary="All" class="text-danger"></div>*@
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
@@ -34,19 +35,48 @@
             </div>
             <div class="form-group">
                 <label asp-for="CategoryId" class="control-label"></label>
-                <select asp-for="CategoryId" class ="form-control" asp-items="ViewBag.CategoryId"></select>
+                <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="Unit" class="control-label"></label>
+                <input asp-for="Unit" class="form-control" />
+                <span asp-validation-for="Unit" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <label asp-for="ConversionRate" class="control-label"></label>
+                <input asp-for="ConversionRate" class="form-control" />
+                <span asp-validation-for="ConversionRate" class="text-danger"></span>
             </div>
-        </form>
+            <div class="form-group">
+                <label asp-for="PurchasePrice" class="control-label"></label>
+                <input asp-for="PurchasePrice" class="form-control" />
+                <span asp-validation-for="PurchasePrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RetailPrice" class="control-label"></label>
+                <input asp-for="RetailPrice" class="form-control" />
+                <span asp-validation-for="RetailPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WholesalePrice" class="control-label"></label>
+                <input asp-for="WholesalePrice" class="form-control" />
+                <span asp-validation-for="WholesalePrice" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-12">
+                <input type="submit" value="Create" class="btn btn-primary" />
+        </div>
     </div>
-</div>
+</form>
 
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

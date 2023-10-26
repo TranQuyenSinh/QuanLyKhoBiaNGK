@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QuanLyKhoBiaNGK.Data;
 using QuanLyKhoBiaNGK.Models;
+using QuanLyKhoBiaNGK.ViewModels;
 
 namespace QuanLyKhoBiaNGK.Controllers
 {
@@ -22,8 +23,11 @@ namespace QuanLyKhoBiaNGK.Controllers
         // GET: Products
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Products.Include(p => p.Category);
-            return View(await applicationDbContext.ToListAsync());
+            var products = await _context.Products
+                                        .Include(p => p.Category)
+                                        .Include(p=>p.Prices)
+                                        .ToListAsync();
+            return View(products);
         }
 
         // GET: Products/Details/5
@@ -57,16 +61,34 @@ namespace QuanLyKhoBiaNGK.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,InventoryLevel,Inventory,CategoryId")] Product product)
+        public async Task<IActionResult> Create(CreateProductModel model)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(product);
+                var product = new Product()
+                {
+                    Name = model.Name,
+                    Description = model.Description,
+                    Inventory = model.Inventory,
+                    InventoryLevel = model.InventoryLevel,
+                    CategoryId = model.CategoryId,
+                };
+                var price = new Price()
+                {
+                    Unit = model.Unit,
+                    ConversionRate = model.ConversionRate,
+                    PurchasePrice = model.PurchasePrice,
+                    RetailPrice = model.RetailPrice,
+                    WholesalePrice = model.WholesalePrice,
+                    Product = product,
+                };
+                _context.Products.Add(product);
+                _context.Prices.Add(price);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Id", product.CategoryId);
-            return View(product);
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", model.CategoryId);
+            return View(model);
         }
 
         // GET: Products/Edit/5
@@ -155,14 +177,14 @@ namespace QuanLyKhoBiaNGK.Controllers
             {
                 _context.Products.Remove(product);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ProductExists(int id)
         {
-          return (_context.Products?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Products?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
