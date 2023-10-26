@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QuanLyKhoBiaNGK.Data;
 using QuanLyKhoBiaNGK.Models;
+using QuanLyKhoBiaNGK.Seeders;
 
 namespace QuanLyKhoBiaNGK.Controllers
 {
@@ -22,7 +23,12 @@ namespace QuanLyKhoBiaNGK.Controllers
         // GET: Customers
         public async Task<IActionResult> Index()
         {
-              return _context.Customers != null ? 
+			if (!_context.Customers.Any())
+			{
+				Seeder.SeedCustomers(_context, "customers.xlsx");
+			}
+
+			return _context.Customers != null ? 
                           View(await _context.Customers.ToListAsync()) :
                           Problem("Entity set 'ApplicationDbContext.Customers'  is null.");
 

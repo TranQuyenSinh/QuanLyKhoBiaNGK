@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QuanLyKhoBiaNGK.Data;
 using QuanLyKhoBiaNGK.Models;
+using QuanLyKhoBiaNGK.Seeders;
 using QuanLyKhoBiaNGK.ViewModels;
 
 namespace QuanLyKhoBiaNGK.Controllers
@@ -23,6 +24,10 @@ namespace QuanLyKhoBiaNGK.Controllers
         // GET: Products
         public async Task<IActionResult> Index()
         {
+            if (!_context.Products.Any() && !_context.Prices.Any())
+            {
+                Seeder.SeedProducts(_context, "products.xlsx");
+            }
             var products = await _context.Products
                                         .Include(p => p.Category)
                                         .Include(p=>p.Prices)
