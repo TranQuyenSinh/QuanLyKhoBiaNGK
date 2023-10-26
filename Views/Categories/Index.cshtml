@@ -7,7 +7,7 @@
 <h1>Quản lý sản phẩm</h1>
 
 <p>
-    <a asp-action="Create">Tạo mới sản phẩm </a>
+    <a class="btn btn-primary " asp-action="Create">Tạo mới danh mục </a>
 </p>
 <table class="table">
     <thead>
@@ -21,13 +21,14 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
+                <td class="text-center">
+                
+                    <a asp-action="Details"  asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name) </a> 
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Sửa</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Chi Tiết </a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Xóa </a>
+                <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Sửa</a> |
+               
+                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Xóa </a>
             </td>
         </tr>
 }
