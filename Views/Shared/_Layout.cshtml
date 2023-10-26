@@ -91,8 +91,8 @@
 
 					<li class="sidebar-header text-uppercase text-primary">Thống kê</li>
 
-					<li class="sidebar-item @(ViewData["ActivePage"]?.ToString() == "warehouse" ? "active":"")">
-						<a class="sidebar-link" href="ui-cards.html">
+					<li class="sidebar-item @(ViewData["ActivePage"]?.ToString() == "inventory" ? "active":"")">
+						<a class="sidebar-link" asp-controller="Statistics" asp-action="Inventory">
 							<i class="fa-solid fa-warehouse"></i>
 							<span class="align-middle">Thống kê tồn kho</span>
 						</a>
