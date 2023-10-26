@@ -22,5 +22,7 @@ namespace QuanLyKhoBiaNGK.Models
 
         [DisplayName("Loại sản phẩm")]
         public Category? Category { get; set;}
+
+        public virtual ICollection<Price>? Prices { get; set; }
     }
 }
