@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ using QuanLyKhoBiaNGK.Seeders;
 
 namespace QuanLyKhoBiaNGK.Controllers
 {
+    [Authorize]
     public class CustomersController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -23,12 +25,12 @@ namespace QuanLyKhoBiaNGK.Controllers
         // GET: Customers
         public async Task<IActionResult> Index()
         {
-			if (!_context.Customers.Any())
-			{
-				Seeder.SeedCustomers(_context, "customers.xlsx");
-			}
+            if (!_context.Customers.Any())
+            {
+                Seeder.SeedCustomers(_context, "customers.xlsx");
+            }
 
-			return _context.Customers != null ? 
+            return _context.Customers != null ?
                           View(await _context.Customers.ToListAsync()) :
                           Problem("Entity set 'ApplicationDbContext.Customers'  is null.");
 
@@ -158,14 +160,14 @@ namespace QuanLyKhoBiaNGK.Controllers
             {
                 _context.Customers.Remove(customer);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool CustomerExists(int id)
         {
-          return (_context.Customers?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Customers?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

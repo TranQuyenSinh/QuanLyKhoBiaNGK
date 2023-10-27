@@ -1,0 +1,95 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+	<nav id="sidebar" class="sidebar js-sidebar">
+		<div class="sidebar-content js-simplebar">
+			<a class="sidebar-brand" href="/">
+				<span class="align-middle">Kho AGU</span>
+			</a>
+			<ul class="sidebar-nav">
+
+				<li class="sidebar-header text-uppercase text-primary">Hệ thống</li>
+
+				<li class="sidebar-item @(ViewData["ActivePage"]?.ToString() == "home" ? "active":"")">
+					<a class="sidebar-link" href="/">
+						<i class="fa-regular fa-rectangle-list"></i>
+						<span class="align-middle">Bảng điều khiển</span>
+					</a>
+				</li>
+
+				<li class="sidebar-item @(ViewData["ActivePage"]?.ToString() == "user" ? "active":"")">
+					<a class="sidebar-link" asp-controller="Users" asp-action="Index">
+						<i class="fa-regular fa-user"></i>
+						<span class="align-middle">Quản lý người dùng</span>
+					</a>
+				</li>
+
+				<li class="sidebar-header text-uppercase text-primary">Danh mục</li>
+
+				<li class="sidebar-item @(ViewData["ActivePage"]?.ToString() == "category" ? "active":"")">
+					<a class="sidebar-link" asp-controller="Categories" asp-action="Index">
+						<i class="fa-solid fa-bars-staggered"></i>
+						<span class="align-middle">Quản lý danh mục</span>
+					</a>
+				</li>
+
+				<li class="sidebar-item @(ViewData["ActivePage"]?.ToString() == "product" ? "active":"")">
+					<a class="sidebar-link" asp-controller="Products" asp-action="Index">
+						<i class="fa-solid fa-box"></i>
+						<span class="align-middle">Quản lý hàng hóa</span>
+					</a>
+				</li>
+
+				<li class="sidebar-header text-uppercase text-primary">Kinh doanh</li>
+
+				<li class="sidebar-item @(ViewData["ActivePage"]?.ToString() == "customer" ? "active":"")">
+					<a class="sidebar-link" asp-controller="Customers" asp-action="Index">
+						<i class="fa-solid fa-user"></i>
+						<span class="align-middle">Quản lý khách hàng</span>
+					</a>
+				</li>
+
+				<li class="sidebar-item @(ViewData["ActivePage"]?.ToString() == "supplier" ? "active":"")">
+					<a class="sidebar-link" asp-controller="Suppliers" asp-action="Index">
+						<i class="fa-solid fa-user-tie"></i>
+						<span class="align-middle">Quản lý nhà cung cấp</span>
+					</a>
+				</li>
+
+				<li class="sidebar-item @(ViewData["ActivePage"]?.ToString() == "import_product" ? "active":"")">
+					<a class="sidebar-link" href="#">
+						<i class="fa-solid fa-file-import"></i>
+						<span class="align-middle">Quản lý nhập hàng</span>
+					</a>
+				</li>
+
+				<li class="sidebar-item @(ViewData["ActivePage"]?.ToString() == "export_product" ? "active":"")">
+					<a class="sidebar-link" href="ui-forms.html">
+						<i class="fa-solid fa-file-export"></i>
+						<span class="align-middle">Quản lý xuất hàng</span>
+					</a>
+				</li>
+
+				<li class="sidebar-header text-uppercase text-primary">Thống kê</li>
+
+				<li class="sidebar-item @(ViewData["ActivePage"]?.ToString() == "inventory" ? "active":"")">
+					<a class="sidebar-link" asp-controller="Statistics" asp-action="Inventory">
+						<i class="fa-solid fa-warehouse"></i>
+						<span class="align-middle">Thống kê tồn kho</span>
+					</a>
+				</li>
+
+				<li class="sidebar-item @(ViewData["ActivePage"]?.ToString() == "profit" ? "active":"")">
+					<a class="sidebar-link" href="ui-cards.html">
+						<i class="fa-solid fa-sack-dollar"></i>
+						<span class="align-middle">Thống kê lợi nhuận</span>
+					</a>
+				</li>
+
+			</ul>
+		</div>
+	</nav>
+}

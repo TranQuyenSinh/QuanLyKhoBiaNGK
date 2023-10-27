@@ -2,21 +2,24 @@
 using Microsoft.AspNetCore.Mvc;
 using QuanLyKhoBiaNGK.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace QuanLyKhoBiaNGK.Controllers
 {
+    [Authorize]
     public class StatisticsController : Controller
     {
-        
+
         private readonly ApplicationDbContext _context;
-        public StatisticsController(ApplicationDbContext context) { 
+        public StatisticsController(ApplicationDbContext context)
+        {
             _context = context;
         }
 
         // GET: StatisticsController
         public ActionResult Inventory()
         {
-            var products = _context.Products.Include(x=>x.Category).ToList();
+            var products = _context.Products.Include(x => x.Category).ToList();
             var exhaustProducts = _context.Products.Where(x => x.Inventory < x.InventoryLevel).Include(x => x.Category).ToList();
             ViewData["ExhaustProducts"] = exhaustProducts;
             return View(products);
