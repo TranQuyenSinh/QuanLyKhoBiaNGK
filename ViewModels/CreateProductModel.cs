@@ -27,25 +27,6 @@ namespace QuanLyKhoBiaNGK.ViewModels
         [DisplayName("Loại sản phẩm")]
         public int CategoryId { get; set; }
 
-
-        [DisplayName("Đơn vị tính")]
-        public string Unit { get; set; }
-
-
-        [DisplayName("Quy đổi ")]
-        public int ConversionRate { get; set; }
-
-
-        [DisplayName("Giá nhập")]
-        public int PurchasePrice { get; set; }
-
-
-        [DisplayName("Giá bán lẻ")]
-        public int RetailPrice { get; set; }
-
-
-        [DisplayName("Giá bán sỉ")]
-        public int WholesalePrice { get; set; }
-
+        public List<Price> Prices { get; set; }
     }
 }

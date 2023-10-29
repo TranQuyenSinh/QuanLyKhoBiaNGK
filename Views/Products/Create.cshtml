@@ -1,7 +1,7 @@
 ﻿@model QuanLyKhoBiaNGK.ViewModels.CreateProductModel
 
 @{
-    ViewData["Title"] = "Thêm Hàng Hóa";
+    @* ViewData["Title"] = "Thêm Hàng Hóa"; *@
 }
 
 <h1>Create</h1>
@@ -11,8 +11,7 @@
 <form asp-action="Create">
     <div class="row">
         <div class="col-md-6">
-
-            @*<div asp-validation-summary="All" class="text-danger"></div>*@
+            <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
@@ -37,46 +36,154 @@
                 <label asp-for="CategoryId" class="control-label"></label>
                 <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
             </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+                <div>
+                    <a asp-action="Index">Back to List</a>
+                </div>
+            </div>
         </div>
         <div class="col-md-6">
-            <div class="form-group">
-                <label asp-for="Unit" class="control-label"></label>
-                <input asp-for="Unit" class="form-control" />
-                <span asp-validation-for="Unit" class="text-danger"></span>
+            <div id="price-container">
+                @if (Model == null || Model.Prices == null || Model.Prices.Count == 0)
+                {
+                    <div class="row">
+                        <div class="form-group col">
+                            <label class="control-label">Đơn vị tính</label>
+                            <input asp-for="@Model.Prices[0].Unit" class="form-control" />
+                        </div>
+                        <div class="form-group col">
+                            <label class="control-label">Quy đổi</label>
+                            <input asp-for="@Model.Prices[0].ConversionRate" class="form-control" />
+                        </div>
+                        <div class="form-group col">
+                            <label class="control-label">Giá nhập</label>
+                            <input asp-for="@Model.Prices[0].PurchasePrice" class="form-control" />
+                        </div>
+                        <div class="form-group col">
+                            <label class="control-label">Giá bán lẻ</label>
+                            <input asp-for="@Model.Prices[0].RetailPrice" class="form-control" />
+                        </div>
+                        <div class="form-group col">
+                            <label class="control-label">Giá bán sỉ</label>
+                            <input asp-for="@Model.Prices[0].WholesalePrice" class="form-control" />
+                        </div>
+                        <div class="form-group col d-flex align-items-center justify-content-center">
+                            <button type="button" disabled class="btnRemove btn btn-sm btn-danger w-100">Xóa</button>
+                        </div>
+                    </div>
+                }
+                else if (Model.Prices != null && Model.Prices.Count > 0)
+                {
+                    @for (var i = 0; i < Model.Prices.Count; i++)
+                    {
+                        <div class="row">
+                            <div class="form-group col">
+                                <label class="control-label">Đơn vị tính</label>
+                                <input asp-for="@Model.Prices[@i].Unit" class="form-control" />
+                                <span asp-validation-for="@Model.Prices[@i].Unit" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col">
+                                <label class="control-label">Quy đổi</label>
+                                <input asp-for="@Model.Prices[@i].ConversionRate" class="form-control" />
+                                <span asp-validation-for="@Model.Prices[@i].ConversionRate" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col">
+                                <label class="control-label">Giá nhập</label>
+                                <input asp-for="@Model.Prices[@i].PurchasePrice" class="form-control" />
+                                <span asp-validation-for="@Model.Prices[@i].PurchasePrice" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col">
+                                <label class="control-label">Giá bán lẻ</label>
+                                <input asp-for="@Model.Prices[@i].RetailPrice" class="form-control" />
+                                <span asp-validation-for="@Model.Prices[@i].RetailPrice" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col">
+                                <label class="control-label">Giá bán sỉ</label>
+                                <input asp-for="@Model.Prices[@i].WholesalePrice" class="form-control" />
+                                <span asp-validation-for="@Model.Prices[@i].WholesalePrice" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col d-flex align-items-center justify-content-center">
+                                <button type="button" @(i==0 ? "disabled":"") class="btnRemove btn btn-sm btn-danger w-100" >Xóa</button>
+                            </div>
+                        </div>
+                    }
+                }
             </div>
-            <div class="form-group">
-                <label asp-for="ConversionRate" class="control-label"></label>
-                <input asp-for="ConversionRate" class="form-control" />
-                <span asp-validation-for="ConversionRate" class="text-danger"></span>
+            <div class="row">
+                <div class="col-md-12 mt-3">
+                    <button type="button" id="btnAddPrice" class="btn btn-outline-primary w-100">+ Thêm đơn vị tính</button>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="PurchasePrice" class="control-label"></label>
-                <input asp-for="PurchasePrice" class="form-control" />
-                <span asp-validation-for="PurchasePrice" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="RetailPrice" class="control-label"></label>
-                <input asp-for="RetailPrice" class="form-control" />
-                <span asp-validation-for="RetailPrice" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="WholesalePrice" class="control-label"></label>
-                <input asp-for="WholesalePrice" class="form-control" />
-                <span asp-validation-for="WholesalePrice" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="col-md-12">
-                <input type="submit" value="Create" class="btn btn-primary" />
         </div>
     </div>
 </form>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
 
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-    }
+
+    <script>
+        $(function () {
+            $("#btnAddPrice").click(function () {
+                let count = $("#price-container > .row").length;
+            
+                $("#price-container").append(`
+                    <div class="row mt-3">
+                        <div class="form-group col">
+                            <label class="control-label">Đơn vị tính</label>
+                            <input name="Prices[${count}].Unit" class="form-control" />
+                        </div>
+                        <div class="form-group col">
+                            <label class="control-label">Quy đổi</label>
+                            <input name="Prices[${count}].ConversionRate" class="form-control" />
+                        </div>
+                        <div class="form-group col">
+                            <label class="control-label">Giá nhập</label>
+                            <input name="Prices[${count}].PurchasePrice" class="form-control" />
+                        </div>
+                        <div class="form-group col">
+                            <label class="control-label">Giá bán lẻ</label>
+                            <input name="Prices[${count}].RetailPrice" class="form-control" />
+                        </div>
+                        <div class="form-group col">
+                            <label class="control-label">Giá bán sỉ</label>
+                            <input name="Prices[${count}].WholesalePrice" class="form-control" />
+                        </div>
+                        <div class="form-group col d-flex align-items-center justify-content-center">
+                            <button type="button" class="btnRemove btn btn-sm btn-danger w-100">Xóa</button>
+                        </div>
+                    </div>
+                `);
+
+                AddRemoveAction();
+            });
+
+                
+            AddRemoveAction();
+
+            function ReAssignIndexPrices() {
+                $("#price-container > .row").each(function(index, item) {
+                    $(item).find(".form-control").each((y, item)=> {
+                        $(item).attr("name", (i, currVal) => {
+                            return currVal.replace(/\[\d+\]/, `[${index}]`);
+                        })
+                    })
+                })
+            }
+
+            //add remove button click event
+            function AddRemoveAction(){ 
+                $(".btnRemove").each(function(index, item){
+                    $(item).click(function(){
+                        $(this).closest('.row').remove();
+                        ReAssignIndexPrices()
+                    });
+                })
+            }
+        });
+    </script>
+}

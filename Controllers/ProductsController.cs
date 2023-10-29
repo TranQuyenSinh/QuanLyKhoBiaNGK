@@ -80,17 +80,24 @@ namespace QuanLyKhoBiaNGK.Controllers
                     InventoryLevel = model.InventoryLevel,
                     CategoryId = model.CategoryId,
                 };
-                var price = new Price()
+
+                var prices = new List<Price>();
+                model.Prices?.ForEach(p =>
                 {
-                    Unit = model.Unit,
-                    ConversionRate = model.ConversionRate,
-                    PurchasePrice = model.PurchasePrice,
-                    RetailPrice = model.RetailPrice,
-                    WholesalePrice = model.WholesalePrice,
-                    Product = product,
-                };
+                    var price = new Price()
+                    {
+                        Unit = p.Unit,
+                        ConversionRate = p.ConversionRate,
+                        PurchasePrice = p.PurchasePrice,
+                        RetailPrice = p.RetailPrice,
+                        WholesalePrice = p.WholesalePrice,
+                        Product = product,
+                    };
+                    prices.Add(price);
+                });
+
                 _context.Products.Add(product);
-                _context.Prices.Add(price);
+                _context.Prices.AddRange(prices);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
