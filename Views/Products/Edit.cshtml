@@ -4,9 +4,9 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<h1>Chỉnh sửa sản phẩm</h1>
 
-<h4>Product</h4>
+<h4></h4>
 <hr />
 <form asp-action="Edit">
     <div class="row">
@@ -57,24 +57,14 @@
                     <input asp-for="@Model.WholesalePrice" class="form-control" />
                     <span asp-validation-for="WholesalePrice" class="text-danger"></span>
                 </div>
+                <div class="form-group mt-3">
+                    <input type="submit" value="Lưu" class="btn btn-primary" /> |
+                    <a class="btn btn-secondary" asp-action="Index">Trở lại danh sách</a>
+                </div>
             </div>
-
-
-        </div>
-    </div>
-
-    <div class="form-group">
-        <input type="submit" id="btnSubmit" value="Create" class="btn btn-primary" />
-        <div>
-            <a asp-action="Index">Back to List</a>
         </div>
     </div>
 </form>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
