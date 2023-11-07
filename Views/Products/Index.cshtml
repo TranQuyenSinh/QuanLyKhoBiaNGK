@@ -7,7 +7,7 @@
 <h1>Danh Sách Hàng Hóa</h1>
 
 <p>
-    <a asp-action="Create">Tạo Mới</a>
+    <a class="btn btn-success" asp-action="Create">Tạo mới danh sách</a>
 </p>
 <table class="table">
     <thead>
@@ -62,9 +62,9 @@
                     @Html.DisplayFor(modelItem => item.Category.Name)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Sửa</a> |
+                    <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.Id">Chi tiết</a> |
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Xóa</a>
                 </td>
             </tr>
         }
