@@ -24,7 +24,7 @@
             autocomplete="current-password" aria-required="true" />
     </div>
     <div class="form-group">
-        <button type="submit" class="btn btn-outline-primary btn-lg">Đăng nhập</button>
+        <button type="submit" id="loginBtn" class="btn btn-outline-primary btn-lg">Đăng nhập</button>
     </div>
     <div class="form-group">
         <a class="link-primary" id="forgot-password" asp-page="./ForgotPassword">Quên mật khẩu?</a>
@@ -33,4 +33,12 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        window.addEventListener('keydown', (e) => {
+            if (e.keyCode == 13) {
+                $('#loginBtn').click();
+            }
+        })
+    </script>
 }

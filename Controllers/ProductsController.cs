@@ -9,7 +9,6 @@ using Microsoft.EntityFrameworkCore;
 using QuanLyKhoBiaNGK.Data;
 using QuanLyKhoBiaNGK.Models;
 using QuanLyKhoBiaNGK.Seeders;
-using QuanLyKhoBiaNGK.ViewModels;
 
 namespace QuanLyKhoBiaNGK.Controllers
 {
@@ -26,13 +25,13 @@ namespace QuanLyKhoBiaNGK.Controllers
         // GET: Products
         public async Task<IActionResult> Index()
         {
-            if (!_context.Products.Any() && !_context.Prices.Any())
+            if (!_context.Products.Any())
             {
+                Console.WriteLine("Seed");
                 Seeder.SeedProducts(_context, "products.xlsx");
             }
             var products = await _context.Products
                                         .Include(p => p.Category)
-                                        .Include(p => p.Prices)
                                         .ToListAsync();
             return View(products);
         }
@@ -68,36 +67,11 @@ namespace QuanLyKhoBiaNGK.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CreateProductModel model)
+        public async Task<IActionResult> Create(Product model)
         {
             if (ModelState.IsValid)
             {
-                var product = new Product()
-                {
-                    Name = model.Name,
-                    Description = model.Description,
-                    Inventory = model.Inventory,
-                    InventoryLevel = model.InventoryLevel,
-                    CategoryId = model.CategoryId,
-                };
-
-                var prices = new List<Price>();
-                model.Prices?.ForEach(p =>
-                {
-                    var price = new Price()
-                    {
-                        Unit = p.Unit,
-                        ConversionRate = p.ConversionRate,
-                        PurchasePrice = p.PurchasePrice,
-                        RetailPrice = p.RetailPrice,
-                        WholesalePrice = p.WholesalePrice,
-                        Product = product,
-                    };
-                    prices.Add(price);
-                });
-
-                _context.Products.Add(product);
-                _context.Prices.AddRange(prices);
+                _context.Products.Add(model);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -113,7 +87,9 @@ namespace QuanLyKhoBiaNGK.Controllers
                 return NotFound();
             }
 
-            var product = await _context.Products.FindAsync(id);
+            var product = await _context.Products
+            .Where(x => x.Id == id)
+            .FirstOrDefaultAsync();
             if (product == null)
             {
                 return NotFound();
@@ -122,40 +98,30 @@ namespace QuanLyKhoBiaNGK.Controllers
             return View(product);
         }
 
+
+
         // POST: Products/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,InventoryLevel,Inventory,CategoryId")] Product product)
+        public async Task<IActionResult> Edit(Product model)
         {
-            if (id != product.Id)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(product);
+                    _context.Update(model);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProductExists(product.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    return NotFound();
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Id", product.CategoryId);
-            return View(product);
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Id", model.CategoryId);
+            return View(model);
         }
 
         // GET: Products/Delete/5

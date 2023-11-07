@@ -8,47 +8,75 @@
 
 <h4>Product</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
+<form asp-action="Edit">
+    <div class="row">
+        <div class="col-md-5">
+            <input asp-for="Id" type="hidden" class="product-input" />
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
+                <input asp-for="Name" class="form-control product-input" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
+                <input asp-for="Description" class="form-control product-input" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="InventoryLevel" class="control-label"></label>
-                <input asp-for="InventoryLevel" class="form-control" />
+                <input asp-for="InventoryLevel" class="form-control product-input" />
                 <span asp-validation-for="InventoryLevel" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Inventory" class="control-label"></label>
-                <input asp-for="Inventory" class="form-control" />
+                <input asp-for="Inventory" class="form-control product-input" />
                 <span asp-validation-for="Inventory" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="CategoryId" class="control-label"></label>
-                <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
-                <span asp-validation-for="CategoryId" class="text-danger"></span>
+                <select asp-for="CategoryId" class="form-control product-input" asp-items="ViewBag.CategoryId"></select>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+            <div class="row">
+                <div class="form-group col">
+                    <label class="control-label">Đơn vị tính</label>
+                    <input asp-for="@Model.Unit" class="form-control" />
+                    <span asp-validation-for="Unit" class="text-danger"></span>
+                </div>
+                <div class="form-group col">
+                    <label class="control-label">Giá nhập</label>
+                    <input asp-for="@Model.PurchasePrice" class="form-control" />
+                    <span asp-validation-for="PurchasePrice" class="text-danger"></span>
+                </div>
+                <div class="form-group col">
+                    <label class="control-label">Giá bán lẻ</label>
+                    <input asp-for="@Model.RetailPrice" class="form-control" />
+                    <span asp-validation-for="RetailPrice" class="text-danger"></span>
+                </div>
+                <div class="form-group col">
+                    <label class="control-label">Giá bán sỉ</label>
+                    <input asp-for="@Model.WholesalePrice" class="form-control" />
+                    <span asp-validation-for="WholesalePrice" class="text-danger"></span>
+                </div>
             </div>
-        </form>
+
+
+        </div>
     </div>
-</div>
+
+    <div class="form-group">
+        <input type="submit" id="btnSubmit" value="Create" class="btn btn-primary" />
+        <div>
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </div>
+</form>
 
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

@@ -19,22 +19,19 @@
                 @Html.DisplayNameFor(model => model.Description)
             </th>
             <th>
-                Đơn vị tính
+                @Html.DisplayNameFor(model => model.Unit)
             </th>
             <th>
-                Quy đổi
+                @Html.DisplayNameFor(model => model.PurchasePrice)
             </th>
             <th>
-                Giá nhập
+                @Html.DisplayNameFor(model => model.RetailPrice)
             </th>
             <th>
-                Giá bán lẻ
+                @Html.DisplayNameFor(model => model.WholesalePrice)
             </th>
             <th>
-                Giá bán sỉ
-            </th>
-            <th>
-                Loại sản phẩm
+                @Html.DisplayNameFor(model => model.Category.Name)
             </th>
             <th></th>
         </tr>
@@ -50,19 +47,16 @@
                     @Html.DisplayFor(modelItem => item.Description)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Prices.FirstOrDefault().Unit)
+                    @Html.DisplayFor(modelItem => item.Unit)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Prices.FirstOrDefault().ConversionRate)
+                    @Html.DisplayFor(modelItem => item.PurchasePrice)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Prices.FirstOrDefault().PurchasePrice)
+                    @Html.DisplayFor(modelItem => item.RetailPrice)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Prices.FirstOrDefault().RetailPrice)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Prices.FirstOrDefault().WholesalePrice)
+                    @Html.DisplayFor(modelItem => item.WholesalePrice)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Category.Name)
