@@ -70,19 +70,25 @@ namespace QuanLyKhoBiaNGK.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> GetDeta
-            ilReceivedPartial([FromBody] string unit, int price, int quantity, int amount, int productId)
+        public async Task<IActionResult> GetDetailReceivedPartial(
+            [FromForm]
+        string unit,
+        int price,
+        int quantity,
+        int amount,
+        int productId)
         {
+            var product = await _context.Products.FindAsync(productId);
             var model = new DetailReceived()
             {
                 Unit = unit,
                 Price = price,
                 Quantity = quantity,
                 Amount = amount,
-                ProductId = productId
+                Product = product
             };
-            return PartialView("_DetailReceivedPartial",
-                                model);
+
+            return PartialView("_DetailReceivedPartial", model);
         }
 
         // GET: ReceivedBills/Edit/5
@@ -171,14 +177,14 @@ namespace QuanLyKhoBiaNGK.Controllers
             {
                 _context.ReceivedBills.Remove(receivedBill);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ReceivedBillExists(int id)
         {
-          return (_context.ReceivedBills?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.ReceivedBills?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

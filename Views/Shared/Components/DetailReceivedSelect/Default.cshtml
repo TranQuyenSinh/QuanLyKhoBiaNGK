@@ -1,0 +1,50 @@
+<div class="d-flex gap-2">
+    <select asp-items="ViewBag.Products" class="form-select detail-select"></select>
+    <input class="form-control unit" type="text" disabled value="" />
+    <input class="form-control purchase" type="text" disabled value="0" />
+    <input class="form-control quantity" type="number" value="1" />
+    <input class="form-control amount" type="number" disabled value="0" />
+</div>
+    <input class="btn btn-success float-end mt-2 w-25" type="button" id="btnAddProduct" value="Thêm sản phẩm">
+
+<script defer>
+    $(document).ready(function () {
+        $('.detail-select').change(function (e) {
+            let id = $(this).val()
+            $.ajax({
+                type: 'POST',
+                url: "/Products/ProductDetail?id="+id,
+                success: function(result) { 
+                    $('.unit').val(result.unit)
+                    $('.purchase').val(result.purchasePrice)
+                }
+            });
+        })
+
+        $('.quantity').on('input',function (e) {
+            let amount = $('.purchase').val()*$('.quantity').val();
+            $('.amount').val(amount)
+        })
+
+        $('#btnAddProduct').click(function (e) {
+            let formData = new FormData();
+            formData.append('productId', $('.detail-select').val())
+            formData.append('unit', $('.unit').val())
+            formData.append('price', $('.purchase').val())
+            formData.append('quantity', $('.quantity').val())
+            formData.append('amount', $('.amount').val())
+
+            $.post("/ReceivedBills/GetDetailReceivedPartial",
+            {
+                productId: $('.detail-select').val(),
+                unit: $('.unit').val(),
+                price: $('.purchase').val(),
+                quantity: $('.quantity').val(),
+                amount: $('.amount').val(),
+            }, function(result) { 
+                  $('#detail-container').append(result)
+                }
+            );
+        })
+    })
+</script>

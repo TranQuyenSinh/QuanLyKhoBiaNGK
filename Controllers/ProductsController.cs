@@ -55,6 +55,23 @@ namespace QuanLyKhoBiaNGK.Controllers
             return View(product);
         }
 
+        public async Task<IActionResult> ProductDetail(int? id)
+        {
+            if (id == null || _context.Products == null)
+            {
+                return NotFound();
+            }
+
+            var product = await _context.Products
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            return Json(product);
+        }
+
         // GET: Products/Create
         public IActionResult Create()
         {
