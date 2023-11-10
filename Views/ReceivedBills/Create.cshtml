@@ -1,0 +1,62 @@
+﻿@model QuanLyKhoBiaNGK.ViewModels.CreateReceivedBillVM
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+<h1>Thêm hóa đơn nhập hàng</h1>
+
+<hr />
+<form asp-action="Create">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="SupplierId" class="control-label"></label>
+                <select asp-for="SupplierId" class="form-control" asp-items="ViewBag.SupplierId"></select>
+            </div>
+
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="Note" class="control-label"></label>
+                <input asp-for="Note" class="form-control" />
+                <span asp-validation-for="Note" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="Total" class="control-label"></label>
+                <input asp-for="Total" class="form-control" />
+                <span asp-validation-for="Total" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group my-2">
+            <input type="submit" value="Thêm mới" class="btn btn-primary float-end" />
+        </div>
+        <div class="col-md-12">
+            <hr />
+            <h4>Chi tiết hóa đơn</h4>
+            <table class="table table-striped table-bordered">
+                <thead class="bg-primary text-light">
+                    <tr>
+                        <th scope="col">Sản phẩm</th>
+                        <th scope="col">Đơn vị tính</th>
+                        <th scope="col">Giá nhập</th>
+                        <th scope="col">Số lượng</th>
+                        <th scope="col">Thành tiền</th>
+                    </tr>
+                </thead>
+                <tbody id="detail-container">
+                   
+                </tbody>
+            </table>
+        </div>
+    </div>
+</form>
+
+
+

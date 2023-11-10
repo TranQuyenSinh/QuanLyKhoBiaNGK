@@ -81,7 +81,7 @@ namespace QuanLyKhoBiaNGK.Areas.Identity.Pages.Account
             Console.WriteLine("Password: " + Input.Password);
             if (ModelState.IsValid)
             {
-                var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, false, lockoutOnFailure: false);
+                var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, true, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
                     return LocalRedirect(returnUrl);

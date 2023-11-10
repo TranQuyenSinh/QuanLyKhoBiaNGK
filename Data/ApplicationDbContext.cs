@@ -20,5 +20,8 @@ namespace QuanLyKhoBiaNGK.Data
         public virtual DbSet<Customer> Customers { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Supplier> Suppliers { get; set; }
+        public virtual DbSet<ReceivedBill> ReceivedBills { get; set; }
+        public virtual DbSet<DetailReceived> DetailReceiveds { get; set; }
+
     }
 }

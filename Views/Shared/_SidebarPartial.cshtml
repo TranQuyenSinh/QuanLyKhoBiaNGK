@@ -60,7 +60,7 @@
 				</li>
 
 				<li class="sidebar-item @(ViewData["ActivePage"]?.ToString() == "import_product" ? "active":"")">
-					<a class="sidebar-link" href="#">
+					<a class="sidebar-link" asp-controller="ReceivedBills" asp-action="Index">
 						<i class="fa-solid fa-file-import"></i>
 						<span class="align-middle">Quản lý nhập hàng</span>
 					</a>

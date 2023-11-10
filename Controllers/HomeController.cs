@@ -20,7 +20,8 @@ namespace QuanLyKhoBiaNGK.Controllers
 
 		public IActionResult Index()
 		{
-			return View("Dashboard");
+			//return View("Dashboard");
+			return RedirectToAction("Create", "ReceivedBills");
 		}
 
 

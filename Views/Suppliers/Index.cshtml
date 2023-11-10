@@ -1,0 +1,55 @@
+﻿@model IEnumerable<QuanLyKhoBiaNGK.Models.Supplier>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Trang Nhà Sản Xuất</h1>
+
+<p>
+    <a class="btn btn-success" asp-action="Create">Tạo Mới Khách Hàng</a>
+</p>
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FullName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Phone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                        @Html.DisplayFor(modelItem => item.FullName)
+                </td>
+                <td>
+                        @Html.DisplayFor(modelItem => item.Address)
+                </td>
+                <td>
+                        @Html.DisplayFor(modelItem => item.Phone)
+                </td>
+                <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Tạo mới</a> |
+                    <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">Chi Tiết</a> |
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Xóa</a>
+                </td>
+            </tr>
+            }
+    </tbody>
+</table>
