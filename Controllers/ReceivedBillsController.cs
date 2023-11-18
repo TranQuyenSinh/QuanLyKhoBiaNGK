@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -26,6 +27,7 @@ namespace QuanLyKhoBiaNGK.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
+
         // GET: ReceivedBills/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -37,10 +39,18 @@ namespace QuanLyKhoBiaNGK.Controllers
             var receivedBill = await _context.ReceivedBills
                 .Include(r => r.Supplier)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
+            var detailBill = await _context.DetailReceiveds
+                            .Include(x => x.Product)
+                            .Where(x => x.BillId == id).ToListAsync();
+
             if (receivedBill == null)
             {
                 return NotFound();
             }
+            ViewData["DetailBill"] = detailBill;
+            ViewBag.returnUrl = Request.GetDisplayUrl();
+
 
             return View(receivedBill);
         }
@@ -57,39 +67,62 @@ namespace QuanLyKhoBiaNGK.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Date,Note,SupplierId,Total")] ReceivedBill receivedBill)
+        public async Task<IActionResult> Create([Bind("Date,Note,SupplierId")] ReceivedBill receivedBill)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(receivedBill);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "FullName", receivedBill.SupplierId);
-            return View(receivedBill);
+            _context.Add(receivedBill);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Details), new { Id = receivedBill.Id });
         }
 
+        // GET: ReceivedBills/CreateDetail
+        public IActionResult CreateDetail(int billId)
+        {
+            var bill = _context.ReceivedBills.Find(billId);
+            if (bill == null) return NotFound();
+
+
+            var model = new DetailReceived();
+            ViewData["BillId"] = billId;
+            ViewData["Products"] = new SelectList(_context.Products, "Id", "Name");
+            return View(model);
+        }
+
+        // POST: ReceivedBills/CreateDetail
         [HttpPost]
-        public async Task<IActionResult> GetDetailReceivedPartial(
-            [FromForm]
-        string unit,
-        int price,
-        int quantity,
-        int amount,
-        int productId)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateDetail(int billId, DetailReceived model)
         {
-            var product = await _context.Products.FindAsync(productId);
-            var model = new DetailReceived()
-            {
-                Unit = unit,
-                Price = price,
-                Quantity = quantity,
-                Amount = amount,
-                Product = product
-            };
+            var bill = await _context.ReceivedBills.FindAsync(billId);
+            if (bill == null) return NotFound();
 
-            return PartialView("_DetailReceivedPartial", model);
+            model.BillId = billId;
+            model.Amount = model.Price * model.Quantity;
+            _context.Add(model);
+
+            bill.Total += model.Amount;
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Details), new { Id = billId });
         }
+
+        public async Task<IActionResult> DeleteDetail(int? detailId, string returnUrl)
+        {
+            var detail = await _context.DetailReceiveds
+                                .FindAsync(detailId.Value);
+            if (detail == null)
+            {
+                return NotFound();
+            }
+
+            _context.Remove(detail);
+            await _context.SaveChangesAsync();
+
+            return Redirect(returnUrl);
+        }
+
+
+
+
 
         // GET: ReceivedBills/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -99,7 +132,9 @@ namespace QuanLyKhoBiaNGK.Controllers
                 return NotFound();
             }
 
-            var receivedBill = await _context.ReceivedBills.FindAsync(id);
+            var receivedBill = await _context.ReceivedBills
+                                .Where(x => x.Id == id)
+                                .Include(x => x.Supplier).FirstOrDefaultAsync();
             if (receivedBill == null)
             {
                 return NotFound();

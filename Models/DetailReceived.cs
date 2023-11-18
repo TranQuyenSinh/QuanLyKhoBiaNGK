@@ -16,6 +16,7 @@ namespace QuanLyKhoBiaNGK.Models
         public int Amount { get; set; }
 
         public virtual Product Product { get; set; }
+        [ForeignKey("BillId")]
         public virtual ReceivedBill ReceivedBill { get; set; }
     }
 }

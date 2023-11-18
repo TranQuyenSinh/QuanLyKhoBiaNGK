@@ -9,6 +9,7 @@
 
 <script defer>
     $(document).ready(function () {
+        // lấy đơn vị và giá cả
         $('.detail-select').change(function (e) {
             let id = $(this).val()
             $.ajax({
@@ -21,11 +22,14 @@
             });
         })
 
+        // tính thành tiên khi thay đổi số lượng
         $('.quantity').on('input',function (e) {
             let amount = $('.purchase').val()*$('.quantity').val();
             $('.amount').val(amount)
         })
 
+
+        // thêm sp vào danh sách
         $('#btnAddProduct').click(function (e) {
             let formData = new FormData();
             formData.append('productId', $('.detail-select').val())
