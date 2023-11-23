@@ -4,7 +4,11 @@
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
 # App setting
+<<<<<<< HEAD
 appsettings.json
+=======
+# appsettings.json
+>>>>>>> 55ebce266098c9b19902eaf5e9d0b2c520b8ad22
 
 # User-specific files
 *.rsuser
