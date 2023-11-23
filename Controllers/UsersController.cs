@@ -15,7 +15,6 @@ namespace App.Areas.Identity.Controllers
 {
     // [Authorize(Roles = "Admin")]
     [Authorize]
-    [Route("[controller]")]
     public class UsersController : Controller
     {
         private readonly RoleManager<IdentityRole> _roleManager;
@@ -52,7 +51,7 @@ namespace App.Areas.Identity.Controllers
         }
 
         // GET: /ManageUser/AddRole/id
-        [HttpGet("{id}")]
+        [HttpGet]
         public async Task<IActionResult> AddRoleAsync(string id)
         {
             if (!_roleManager.Roles.Any())
@@ -89,7 +88,7 @@ namespace App.Areas.Identity.Controllers
         }
 
         // // GET: /ManageUser/AddRole/id
-        [HttpPost("{id}")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddRoleAsync(string id, [Bind("Roles")] UserWithRoles model)
         {
@@ -134,7 +133,7 @@ namespace App.Areas.Identity.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpGet("Create")]
+        [HttpGet]
         [AllowAnonymous]
         public IActionResult CreateUser()
         {
@@ -143,7 +142,7 @@ namespace App.Areas.Identity.Controllers
             return View();
         }
         //
-        [HttpPost("Create")]
+        [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateUserAsync(CreateUserVM model)
@@ -166,6 +165,20 @@ namespace App.Areas.Identity.Controllers
             ViewBag.allRoles = new SelectList(roleNames, model.Roles);
 
             return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> DeleteUserAsync(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound("Không tìm thấy user");
+            }
+
+            await _userManager.DeleteAsync(user);
+
+            return RedirectToAction(nameof(Index));
         }
 
         // [HttpGet("{id}")]
