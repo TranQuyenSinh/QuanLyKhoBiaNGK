@@ -7,7 +7,7 @@
 <h1>@ViewData["Title"]</h1>
 
 <p>
-    <a asp-action="Create" class="btn btn-primary ">Tạo mới đơn nhập hàng</a>
+    <a asp-action="Create" class="btn btn-success "> <i class="fa-solid fa-plus me-2"></i>Tạo mới đơn nhập hàng</a>
 </p>
 <table class="table table-hover">
     <thead>
@@ -44,8 +44,8 @@
                     @Html.DisplayFor(modelItem => item.Note)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Sửa</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id"class="btn btn-danger">Xóa</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"><i class="fa-solid fa-pen-to-square me-2"></i>Sửa</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><i class="fa-solid fa-trash me-2"></i>Xóa</a>
                 </td>
 
             </tr>

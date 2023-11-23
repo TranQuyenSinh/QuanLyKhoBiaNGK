@@ -7,7 +7,7 @@
 <h1>Quản lý sản phẩm</h1>
 
 <p>
-    <a class="btn btn-primary " asp-action="Create">Tạo mới danh mục </a>
+    <a class="btn btn-success " asp-action="Create"><i class="fa-solid fa-plus me-2"></i>Tạo mới danh mục </a>
 </p>
 <table class="table">
     <thead>
@@ -26,9 +26,9 @@
                     <a asp-action="Details"  asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name) </a> 
             </td>
             <td>
-                <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Sửa</a> |
+                    <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id"><i class="fa-solid fa-pen-to-square me-2"></i>Sửa</a> |
                
-                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Xóa </a>
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id"><i class="fa-solid fa-trash me-2"></i>Xóa </a>
             </td>
         </tr>
 }
