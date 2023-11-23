@@ -50,13 +50,13 @@
                     @Html.DisplayFor(modelItem => item.Unit)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.PurchasePrice)
+                    @item.PurchasePrice.ToString("n0")
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.RetailPrice)
+                    @item.RetailPrice.ToString("n0")
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.WholesalePrice)
+                    @item.WholesalePrice.ToString("n0")
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Category.Name)
