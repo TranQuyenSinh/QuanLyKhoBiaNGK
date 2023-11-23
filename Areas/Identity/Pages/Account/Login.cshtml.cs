@@ -15,17 +15,18 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
+using QuanLyKhoBiaNGK.Models;
 
 namespace QuanLyKhoBiaNGK.Areas.Identity.Pages.Account
 {
     public class LoginModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<User> _userManager;
 
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger, UserManager<IdentityUser> userManager)
+        public LoginModel(SignInManager<User> signInManager, ILogger<LoginModel> logger, UserManager<User> userManager)
         {
             _signInManager = signInManager;
             _logger = logger;
@@ -52,9 +53,16 @@ namespace QuanLyKhoBiaNGK.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnGetAsync(string returnUrl = null)
         {
+            var user1 = new User
+            {
+                UserName = "thukho2",
+                FullName = "Anh thủ kho 2"
+
+            };
+            await _userManager.CreateAsync(user1, "123123");
             if (!_userManager.Users.Any())
             {
-                var user = new IdentityUser
+                var user = new User
                 {
                     Email = "admin@gmail.com",
                     UserName = "admin"

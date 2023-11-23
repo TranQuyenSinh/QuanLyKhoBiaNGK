@@ -40,14 +40,15 @@ namespace QuanLyKhoBiaNGK.Controllers
                 .Include(r => r.Supplier)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
-            var detailBill = await _context.DetailReceiveds
-                            .Include(x => x.Product)
-                            .Where(x => x.BillId == id).ToListAsync();
-
             if (receivedBill == null)
             {
                 return NotFound();
             }
+
+            var detailBill = await _context.DetailReceiveds
+                            .Include(x => x.Product)
+                            .Where(x => x.BillId == id).ToListAsync();
+
             ViewData["DetailBill"] = detailBill;
             ViewBag.returnUrl = Request.GetDisplayUrl();
 
@@ -108,11 +109,15 @@ namespace QuanLyKhoBiaNGK.Controllers
         public async Task<IActionResult> DeleteDetail(int? detailId, string returnUrl)
         {
             var detail = await _context.DetailReceiveds
-                                .FindAsync(detailId.Value);
+                                .Where(x => x.Id == detailId)
+                                .Include(x => x.ReceivedBill)
+                                .FirstOrDefaultAsync();
             if (detail == null)
             {
                 return NotFound();
             }
+
+            detail.ReceivedBill.Total -= detail.Amount;
 
             _context.Remove(detail);
             await _context.SaveChangesAsync();
@@ -148,7 +153,7 @@ namespace QuanLyKhoBiaNGK.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Date,Note,SupplierId,Total")] ReceivedBill receivedBill)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Date,Note,SupplierId")] ReceivedBill receivedBill)
         {
             if (id != receivedBill.Id)
             {

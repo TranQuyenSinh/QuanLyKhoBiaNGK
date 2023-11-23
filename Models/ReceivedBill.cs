@@ -15,8 +15,8 @@ namespace QuanLyKhoBiaNGK.Models
         public int SupplierId { get; set; }
         [Display(Name = "Tổng tiền")]
         public int Total { get; set; }
-        public virtual ICollection<DetailReceived> DetailReceiveds { get; set; }
-        public virtual Supplier Supplier { get; set; }
+        public virtual ICollection<DetailReceived>? DetailReceiveds { get; set; }
+        public virtual Supplier? Supplier { get; set; }
         //public virtual tb_USER tb_USER { get; set; }
     }
 }

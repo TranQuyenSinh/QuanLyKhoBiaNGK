@@ -5,6 +5,9 @@ using QuanLyKhoBiaNGK.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();
+
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("QuanLyKhoBiaNGK");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -30,7 +33,7 @@ builder.Services.Configure<IdentityOptions>(options =>
     // Cấu hình về User.
     options.User.AllowedUserNameCharacters = // các ký tự đặt tên user
         "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
-    options.User.RequireUniqueEmail = true;  // Email là duy nhất
+    options.User.RequireUniqueEmail = false;  // Email là duy nhất
 
     // Cấu hình đăng nhập.
     options.SignIn.RequireConfirmedEmail = false;            // Cấu hình xác thực địa chỉ email (email phải tồn tại, xác thực rồi mới cho login)
@@ -38,10 +41,10 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.SignIn.RequireConfirmedAccount = false;  // Yêu cầu xác thực email trước khi login, xem trang register để rõ hơn
 
 });
-
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
-builder.Services.AddControllersWithViews();
+builder.Services.AddIdentity<User, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders()
+                .AddDefaultUI();
 
 var app = builder.Build();
 

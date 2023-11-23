@@ -1,0 +1,45 @@
+@model List<QuanLyKhoBiaNGK.ViewModels.UserWithRoles>
+@{
+    ViewData["Title"] = "Quản lý tài khoản";
+}
+<h2>@ViewData["Title"]</h2>
+<p>Tổng số tài khoản: @Model?.Count</p>
+
+<hr>
+<div class="mt-3">
+    <a asp-action="" class="btn btn-success">Tạo tài khoản</a>
+</div>
+
+<table class="table">
+    <tr>
+        <th>Tên người dùng</th>
+        <th>Tên đăng nhập</th>
+        <th>Quyền</th>
+        <th>Hành động</th>
+    </tr>
+    @foreach (var user in Model)
+    {
+        <tr>
+            <td>@user.FullName</td>
+            <td>@user.UserName</td>
+            <td>
+                @if (string.IsNullOrEmpty(user.RoleNames))
+                {
+                    <a class="text-dark" asp-action="AddRole" asp-route-id="@user.Id">+ Thêm quyền</a>
+                }
+                else
+                {
+                    <a asp-action="AddRole" asp-route-id="@user.Id">@user.RoleNames</a>
+                }
+            </td>
+            <td>
+                <a class="btn btn-danger me-2" asp-action="SetPassword" asp-route-id="@user.Id">
+                    <i class="fa-solid fa-lock me-2"></i>
+                    Khóa tài khoản</a>
+                <a class="btn btn-info" asp-action="SetPassword" asp-route-id="@user.Id">
+                    <i class="fa-solid fa-key me-2"></i>
+                    Đổi mật khẩu</a>
+            </td>
+        </tr>
+    }
+</table>

@@ -10,9 +10,9 @@ namespace QuanLyKhoBiaNGK.Controllers
 	public class HomeController : Controller
 	{
 		private readonly ILogger<HomeController> _logger;
-		private readonly SignInManager<IdentityUser> _signInManager;
+		private readonly SignInManager<User> _signInManager;
 
-		public HomeController(ILogger<HomeController> logger, SignInManager<IdentityUser> signInManager)
+		public HomeController(ILogger<HomeController> logger, SignInManager<User> signInManager)
 		{
 			_logger = logger;
 			_signInManager = signInManager;
@@ -21,7 +21,7 @@ namespace QuanLyKhoBiaNGK.Controllers
 		public IActionResult Index()
 		{
 			//return View("Dashboard");
-			return RedirectToAction("Create", "ReceivedBills");
+			return RedirectToAction("Index", "ReceivedBills");
 		}
 
 
