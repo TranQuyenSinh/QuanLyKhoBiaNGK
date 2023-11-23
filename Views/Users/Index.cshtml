@@ -36,9 +36,15 @@
                 <a class="btn btn-info me-2" asp-action="ResetPassword" asp-route-id="@user.Id">
                     <i class="fa-solid fa-key me-2"></i>
                     Đổi mật khẩu</a>
-                <a class="btn btn-danger me-2" asp-action="SetPassword" asp-route-id="@user.Id">
+                @if (user.IsLocked == true) {
+                    <a class="btn btn-primary me-2" asp-action="UnlockUser" asp-route-id="@user.Id">
+                    <i class="fa-solid fa-lock-open me-2"></i>
+                    Mở khóa</a>
+                } else {
+                    <a class="btn btn-danger me-2" asp-action="LockOutUser" asp-route-id="@user.Id">
                     <i class="fa-solid fa-lock me-2"></i>
-                    Khóa</a>
+                    Khóa</a=>
+                }
                 <a class="btn btn-outline-danger btnDeleteUser" asp-action="DeleteUser" asp-route-id="@user.Id">
                     <i class="fa-solid fa-trash-can me-2"></i>
                     Xóa</a>

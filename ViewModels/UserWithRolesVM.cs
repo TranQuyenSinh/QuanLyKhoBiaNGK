@@ -7,4 +7,6 @@ public class UserWithRoles : User
 {
     public string RoleNames { get; set; }
     public List<string>? Roles { get; set; }
+    public bool IsLocked { get; set; }
+
 }

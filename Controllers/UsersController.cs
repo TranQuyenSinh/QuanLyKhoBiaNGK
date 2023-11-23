@@ -13,8 +13,7 @@ using QuanLyKhoBiaNGK.ViewModels;
 
 namespace App.Areas.Identity.Controllers
 {
-    // [Authorize(Roles = "Admin")]
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class UsersController : Controller
     {
         private readonly RoleManager<IdentityRole> _roleManager;
@@ -33,18 +32,23 @@ namespace App.Areas.Identity.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var model = await _userManager.Users.OrderBy(u => u.UserName)
-                    .Select(u => new UserWithRoles()
-                    {
-                        Id = u.Id,
-                        UserName = u.UserName,
-                        FullName = u.FullName
-                    }).ToListAsync();
+            var users = await _userManager.Users.OrderBy(u => u.UserName)
+                   .ToListAsync();
 
-            foreach (var user in model)
+            var model = new List<UserWithRoles>();
+            foreach (var user in users)
             {
-                var roles = await _userManager.GetRolesAsync(user);
-                user.RoleNames = string.Join(",", roles);
+                var roles = (await _userManager.GetRolesAsync(user)).ToList();
+                var isLocked = await _userManager.IsLockedOutAsync(user);
+                model.Add(new UserWithRoles
+                {
+                    Id = user.Id,
+                    UserName = user.UserName,
+                    FullName = user.FullName,
+                    RoleNames = string.Join(",", roles),
+                    IsLocked = isLocked,
+                    Roles = roles
+                });
             }
 
             return View(model);
@@ -216,6 +220,33 @@ namespace App.Areas.Identity.Controllers
 
             await _userManager.RemovePasswordAsync(user);
             await _userManager.AddPasswordAsync(user, model.NewPassword);
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> LockOutUserAsync(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+
+            if (user == null)
+                return NotFound("Không tìm thấy user id = " + id);
+
+            await _userManager.SetLockoutEnabledAsync(user, true);
+            await _userManager.SetLockoutEndDateAsync(user, DateTimeOffset.MaxValue);
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> UnlockUserAsync(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+
+            if (user == null)
+                return NotFound("Không tìm thấy user id = " + id);
+
+            await _userManager.SetLockoutEnabledAsync(user, false);
 
             return RedirectToAction(nameof(Index));
         }

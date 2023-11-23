@@ -85,8 +85,6 @@ namespace QuanLyKhoBiaNGK.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
-            Console.WriteLine("Email: " + Input.Email);
-            Console.WriteLine("Password: " + Input.Password);
             if (ModelState.IsValid)
             {
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, true, lockoutOnFailure: false);
