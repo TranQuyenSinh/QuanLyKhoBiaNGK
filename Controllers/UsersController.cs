@@ -181,62 +181,43 @@ namespace App.Areas.Identity.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // [HttpGet("{id}")]
-        // public async Task<IActionResult> SetPasswordAsync(string id)
-        // {
-        //     if (string.IsNullOrEmpty(id))
-        //     {
-        //         return NotFound($"Không có user");
-        //     }
+        [HttpGet]
+        public async Task<IActionResult> ResetPasswordAsync(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return NotFound($"Không có user");
+            }
 
-        //     var user = await _userManager.FindByIdAsync(id);
-        //     ViewBag.user = ViewBag;
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound($"Không thấy user, id = {id}.");
+            }
 
-        //     if (user == null)
-        //     {
-        //         return NotFound($"Không thấy user, id = {id}.");
-        //     }
+            ViewBag.User = user;
 
-        //     return View();
-        // }
+            return View();
+        }
 
-        // [HttpPost("{id}")]
-        // [ValidateAntiForgeryToken]
-        // public async Task<IActionResult> SetPasswordAsync(string id, SetUserPasswordModel model)
-        // {
-        //     if (string.IsNullOrEmpty(id))
-        //     {
-        //         return NotFound($"Không có user");
-        //     }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPasswordAsync(string id, [Bind("NewPassword")] ResetPasswordVM model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
 
-        //     var user = await _userManager.FindByIdAsync(id);
-        //     ViewBag.user = ViewBag;
+            var user = await _userManager.FindByIdAsync(id);
 
-        //     if (user == null)
-        //     {
-        //         return NotFound($"Không thấy user, id = {id}.");
-        //     }
+            if (user == null)
+                return NotFound("Không tìm thấy user id = " + id);
 
-        //     if (!ModelState.IsValid)
-        //     {
-        //         return View(model);
-        //     }
+            await _userManager.RemovePasswordAsync(user);
+            await _userManager.AddPasswordAsync(user, model.NewPassword);
 
-        //     await _userManager.RemovePasswordAsync(user);
-
-        //     var addPasswordResult = await _userManager.AddPasswordAsync(user, model.NewPassword);
-        //     if (!addPasswordResult.Succeeded)
-        //     {
-        //         foreach (var error in addPasswordResult.Errors)
-        //         {
-        //             ModelState.AddModelError(string.Empty, error.Description);
-        //         }
-        //         return View(model);
-        //     }
-
-        //     StatusMessage = $"Vừa cập nhật mật khẩu cho user: {user.UserName}";
-
-        //     return RedirectToAction("Index");
-        // }
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
