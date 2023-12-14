@@ -26,7 +26,7 @@
     <tbody>
         @foreach (var item in (List<Product>)ViewData["ExhaustProducts"])
         {
-            <tr>
+            <tr class="clickable-row" data-href="@Url.Action("Details", "Products", new { Id = item.Id })">
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
@@ -67,7 +67,7 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
+            <tr class="clickable-row" data-href="@Url.Action("Details", "Products", new { Id = item.Id })">
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>

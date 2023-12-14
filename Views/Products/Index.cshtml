@@ -9,7 +9,7 @@
 <p>
     <a class="btn btn-success" asp-action="Create"><i class="fa-solid fa-plus me-2"></i>Tạo mới danh sách</a>
 </p>
-<table class="table table-striped table-bordered">
+<table class="table table-striped table-bordered table-hover">
     <thead class="bg-info text-light">
         <tr>
             <th>
@@ -39,7 +39,7 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
+            <tr class="clickable-row" data-href="@Url.Action("Details", new { Id = item.Id })">
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
@@ -63,7 +63,6 @@
                 </td>
                 <td>
                     <a class="btn btn-warning  btn-lg me-2" asp-action="Edit" asp-route-id="@item.Id"><i class="fa-solid fa-pen-to-square"></i></a>
-                    <a class="btn btn-primary  btn-lg me-2" asp-action="Details" asp-route-id="@item.Id"><i class="fa-solid fa-circle-info"></i></a>
                     <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id"><i class="fa-solid fa-trash"></i></a>
                 </td>
             </tr>

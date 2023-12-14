@@ -3,5 +3,6 @@
 }
 
 $('.clickable-row').click(function () {
-   window.location = $(this).data('href')
+   let url = $(this).data('href')
+   if (url) window.location = $(this).data('href')
 })
