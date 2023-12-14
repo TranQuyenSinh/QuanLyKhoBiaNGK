@@ -1,16 +1,16 @@
 ﻿@model IEnumerable<QuanLyKhoBiaNGK.Models.Supplier>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Quản lý nhà cung cấp";
 }
 
-<h1>Trang Nhà Sản Xuất</h1>
+<h1>@ViewData["Title"]</h1>
 
 <p>
-    <a class="btn btn-success" asp-action="Create"><i class="fa-solid fa-plus me-2"></i>Tạo Mới Khách Hàng</a>
+    <a class="btn btn-success" asp-action="Create"><i class="fa-solid fa-plus me-2"></i>Tạo nhà cung cấp</a>
 </p>
-<table class="table">
-    <thead class="thead-dark">
+<table class="table table-bordered table-striped">
+    <thead class="bg-info text-light">
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.FullName)
@@ -24,7 +24,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Email)
             </th>
-            <th></th>
+            <th>Hành động</th>
         </tr>
     </thead>
     <tbody>
@@ -45,9 +45,9 @@
                         @Html.DisplayFor(modelItem => item.Email)
                 </td>
                 <td>
-                    <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id"><i class="fa-solid fa-arrows-rotate me-2"></i>Tạo mới</a> |
-                    <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.Id"><i class="fa-solid fa-circle-info me-2"></i>Chi Tiết</a> |
-                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id"><i class="fa-solid fa-trash me-2"></i>Xóa</a>
+                    <a class="btn btn-warning btn-lg me-2" asp-action="Edit" asp-route-id="@item.Id"><i class="fa-solid fa-pen-to-square"></i></a>
+                    <a class="btn btn-primary btn-lg me-2" asp-action="Details" asp-route-id="@item.Id"><i class="fa-solid fa-circle-info"></i></a>
+                    <a class="btn btn-danger btn-lg" asp-action="Delete" asp-route-id="@item.Id"><i class="fa-solid fa-trash"></i></a>
                 </td>
             </tr>
             }

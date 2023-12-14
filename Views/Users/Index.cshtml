@@ -10,13 +10,15 @@
     <a asp-action="CreateUser" class="btn btn-success"><i class="fa-solid fa-plus me-2"></i>Tạo tài khoản</a>
 </div>
 
-<table class="table">
-    <tr>
+<table class="table table-striped table-bordered mt-3">
+    <thead class="text-light bg-info">
+        <tr>
         <th>Tên người dùng</th>
         <th>Tên đăng nhập</th>
         <th>Quyền</th>
         <th>Hành động</th>
     </tr>
+    </thead>
     @foreach (var user in Model)
     {
         <tr>

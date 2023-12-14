@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<QuanLyKhoBiaNGK.Models.Product>
 @{
-    ViewData["Title"] = "Inventory";
+    ViewData["Title"] = "Thống kê tồn kho";
     ViewData["ActivePage"] = "inventory";
 
 }
-<h1>Danh Sách Hàng Sắp Hết </h1>
+<h1>Danh Sách Hàng Sắp Hết</h1>
 
-<table class="table">
-    <thead>
+<table class="table table-hover table-bordered table-striped ">
+    <thead class="bg-info text-light">
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
@@ -47,8 +47,8 @@
 
 <h1>Danh Sách Hàng Hóa</h1>
 
-<table class="table">
-    <thead>
+<table class="table table-hover table-bordered table-striped ">
+    <thead class="bg-info text-light">
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
@@ -84,7 +84,3 @@
         }
     </tbody>
 </table>
-
-
-
-
