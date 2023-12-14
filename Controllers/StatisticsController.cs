@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace QuanLyKhoBiaNGK.Controllers
 {
     [Authorize]
+    //ThongKe
     public class StatisticsController : Controller
     {
 

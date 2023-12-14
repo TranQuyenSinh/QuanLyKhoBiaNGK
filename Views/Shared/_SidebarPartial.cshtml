@@ -67,7 +67,7 @@
 				</li>
 
 				<li class="sidebar-item @(ViewData["ActivePage"]?.ToString() == "export_product" ? "active":"")">
-					<a class="sidebar-link" href="ui-forms.html">
+					<a class="sidebar-link" asp-controller="DeliveryBills" asp-action="Index">
 						<i class="fa-solid fa-file-export"></i>
 						<span class="align-middle">Quản lý xuất hàng</span>
 					</a>

@@ -5,15 +5,11 @@ namespace QuanLyKhoBiaNGK.Models
 {
     public class Customer
     {
-
         [Key]
         public int Id { get; set; }
         [StringLength(50)]
-        [DisplayName("Tên")]
-        public string FirstName{ get; set; }
-        [StringLength(50)]
-        [DisplayName("Họ")]
-        public string? LastName { get; set; }
+        [DisplayName("Họ và Tên")]
+        public string FullName{ get; set; }
         [DataType(DataType.Date)]
         [DisplayName("Ngày Sinh")]
         public Nullable<System.DateTime> Birth { get; set; }

@@ -11,6 +11,7 @@ using QuanLyKhoBiaNGK.Models;
 
 namespace QuanLyKhoBiaNGK.Controllers
 {
+    //HoaDon
     public class ReceivedBillsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -71,7 +72,7 @@ namespace QuanLyKhoBiaNGK.Controllers
         {
             _context.Add(receivedBill);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Details), new { Id = receivedBill.Id });
+            return RedirectToAction(nameof(Details), new {Id = receivedBill.Id });
         }
 
         // GET: ReceivedBills/CreateDetail
@@ -120,7 +121,7 @@ namespace QuanLyKhoBiaNGK.Controllers
             return Redirect(returnUrl);
         }
 
-
+    
 
 
 

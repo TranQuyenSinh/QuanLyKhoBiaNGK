@@ -12,6 +12,12 @@
         <div class="col-md-4">
             <div class="row">
                 <dt class="col-sm-5">
+                    @Html.DisplayNameFor(model => model.Supplier.FullName)
+                </dt>
+                <dd class="col-sm-7">
+                    @Html.DisplayFor(model => model.Supplier.FullName)
+                </dd>
+                <dt class="col-sm-5">
                     @Html.DisplayNameFor(model => model.Date)
                 </dt>
                 <dd class="col-sm-7">
@@ -28,12 +34,6 @@
                 </dt>
                 <dd class="col-sm-7">
                     @Html.DisplayFor(model => model.Total)
-                </dd>
-                <dt class="col-sm-5">
-                    @Html.DisplayNameFor(model => model.Supplier.FullName)
-                </dt>
-                <dd class="col-sm-7">
-                    @Html.DisplayFor(model => model.Supplier.FullName)
                 </dd>
             </div>
         </div>

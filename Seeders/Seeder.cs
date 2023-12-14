@@ -34,8 +34,7 @@ namespace QuanLyKhoBiaNGK.Seeders
 					customerReader.Read();
 					var item = new Customer()
 					{
-						FirstName = customerReader.GetString(0),
-						LastName = customerReader.GetString(1),
+						FullName = customerReader.GetString(1),
 						Birth = DateTime.Parse(customerReader.GetValue(2).ToString()),
 						Gender = customerReader.GetValue(3).ToString() == "1",
 						Address = customerReader.GetString(4),
