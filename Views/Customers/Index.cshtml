@@ -1,17 +1,17 @@
 ﻿@model IEnumerable<QuanLyKhoBiaNGK.Models.Customer>
 
 @{
-    ViewData["Title"] = "Danh sách sản phẩm";
+    ViewData["Title"] = "Quản lý khách hàng";
 }
 
 
-<h1> Danh sách sản phẩm </h1>
+<h1>@ViewData["Title"]</h1>
 
 <p>
-    <a class="btn btn-success" asp-action="Create">Tạo mới khách hàng</a>
+    <a class="btn btn-success" asp-action="Create"><i class="fa-solid fa-plus me-2"></i>Tạo mới khách hàng</a>
 </p>
-<table class="table">
-    <thead>
+<table class="table table-striped table-bordered table-hover">
+    <thead class="text-light bg-info">
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.FullName)
@@ -31,13 +31,13 @@
             <th>
                 @Html.DisplayNameFor(model => model.Email)
             </th>
-            <th></th>
+            <th>Hành động</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
+            <tr class="clickable-row" data-href="@Url.Action("Details", new { Id = item.Id })">
                 <td>
                     @Html.DisplayFor(modelItem => item.FullName)
                 </td>
@@ -67,9 +67,8 @@
                     @Html.DisplayFor(modelItem => item.Email)
                 </td>
                 <td>
-                    <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Sửa</a> |
-                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Xóa </a> |
-                    <a class="btn btn-primary " asp-action="Details" asp-route-id="@item.Id">Chi tiết </a>
+                    <a class="btn btn-warning btn-lg me-2" asp-action="Edit" asp-route-id="@item.Id"><i class="fa-solid fa-pen-to-square"></i></a>
+                    <a class="btn btn-danger btn-lg me-2" asp-action="Delete" asp-route-id="@item.Id"><i class="fa-solid fa-trash "></i></a>
                 </td>
             </tr>
         }

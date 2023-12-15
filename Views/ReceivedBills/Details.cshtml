@@ -69,9 +69,7 @@
                             <td>@item.Price</td>
                             <td>@item.Quantity</td>
                             <td>@item.Amount</td>
-                            <td><a asp-action="DeleteDetail" asp-route-detailId="@item.Id"
-                                    asp-route-returnUrl="@ViewBag.returnUrl" class="btn btn-sm btn-danger"><i
-                                        class="fas fa-times"></i></a></td>
+                            <td><a asp-action="DeleteDetail" asp-route-detailId="@item.Id" asp-route-returnUrl="@ViewBag.returnUrl" class="btn btn-sm btn-danger"><i class="fas fa-times"></i></a></td>
                         </tr>
                     }
 
@@ -81,6 +79,6 @@
     </div>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a class="btn btn-warning" asp-action="Edit" asp-route-id="@Model?.Id">Sửa</a> |
+    <a class="btn btn-secondary" asp-action="Index">Trở lại danh sách</a>
 </div>

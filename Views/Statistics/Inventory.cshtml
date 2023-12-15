@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<QuanLyKhoBiaNGK.Models.Product>
 @{
-    ViewData["Title"] = "Inventory";
+    ViewData["Title"] = "Thống kê tồn kho";
     ViewData["ActivePage"] = "inventory";
 
 }
-<h1>Danh Sách Hàng Sắp Hết </h1>
+<h1>Danh Sách Hàng Sắp Hết</h1>
 
-<table class="table">
-    <thead>
+<table class="table table-hover table-bordered table-striped ">
+    <thead class="bg-info text-light">
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
@@ -26,7 +26,7 @@
     <tbody>
         @foreach (var item in (List<Product>)ViewData["ExhaustProducts"])
         {
-            <tr>
+            <tr class="clickable-row" data-href="@Url.Action("Details", "Products", new { Id = item.Id })">
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
@@ -47,8 +47,8 @@
 
 <h1>Danh Sách Hàng Hóa</h1>
 
-<table class="table">
-    <thead>
+<table class="table table-hover table-bordered table-striped ">
+    <thead class="bg-info text-light">
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
@@ -67,7 +67,7 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
+            <tr class="clickable-row" data-href="@Url.Action("Details", "Products", new { Id = item.Id })">
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
@@ -84,7 +84,3 @@
         }
     </tbody>
 </table>
-
-
-
-

@@ -1,7 +1,13 @@
 ﻿@using Microsoft.AspNetCore.Identity
+@using System.Security.Claims
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
 
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
+@{
+	User currentUser = await UserManager.GetUserAsync(User);
+	string name = currentUser != null ? (!string.IsNullOrEmpty(currentUser.FullName) ? currentUser.FullName :
+	currentUser.UserName) : "";
+}
 
 
 <!DOCTYPE html>
@@ -43,12 +49,12 @@
 						<li class="nav-item">
 							<a id="manage" class="nav-link text-dark" asp-area="Identity"
 								asp-page="/Account/Manage/Index" title="Manage">Xin chào
-								@UserManager.GetUserName(User)!</a>
+								<strong class="fw-bold text-info">@name</strong></a>
 						</li>
 						<li class="nav-item">
 							<form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout"
 								asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
-								<button id="logout" type="submit" class="nav-link btn btn-link text-dark">Đăng
+								<button id="logout" type="submit" class="nav-link btn btn-link text-muted ">Đăng
 									xuất</button>
 							</form>
 						</li>
@@ -67,7 +73,7 @@
 						<div class="col-6 text-start">
 							<p class="mb-0">
 								<a class="text-muted" href="https://adminkit.io/" target="_blank"><strong>Trang web được
-										xây dựng bởi Nhóm 3</strong></a>
+										xây dựng bởi Nhóm 13</strong></a>
 							</p>
 						</div>
 						<div class="col-6 text-end">

@@ -1,0 +1,13 @@
+﻿@page
+@model AccessDeniedModel
+@{
+    ViewData["Title"] = "Hạn chế truy cập";
+}
+
+<div class="fw-bold">
+    <h1 class="text-danger">@ViewData["Title"]</h1>
+    <p class="text-danger">Bạn không được phép truy cập chức năng này.</p>
+    <div class="text-center">
+        <a asp-action="Index" asp-controller="Home" class="btn btn-outline-primary">Quay lại trang chủ</a>
+    </div>
+</div>

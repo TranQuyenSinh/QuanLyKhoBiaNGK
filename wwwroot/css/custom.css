@@ -1,0 +1,7 @@
+td {
+   max-width: 200px !important;
+}
+
+tr.clickable-row {
+   cursor: pointer;
+}

@@ -7,30 +7,31 @@
 <h1>Quản lý sản phẩm</h1>
 
 <p>
-    <a class="btn btn-primary " asp-action="Create">Tạo mới danh mục </a>
+    <a class="btn btn-success " asp-action="Create"><i class="fa-solid fa-plus me-2"></i>Tạo mới danh mục </a>
 </p>
-<table class="table">
-    <thead>
+<table class="table w-25 table-stripped table-bordered">
+    <thead class="bg-info text-light">
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
-            <th></th>
+            <th>Hành động</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-                <td class="text-center">
-                
-                    <a asp-action="Details"  asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name) </a> 
-            </td>
-            <td>
-                <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Sửa</a> |
-               
-                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Xóa </a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+
+                    <a asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name) </a>
+                </td>
+                <td>
+                    <a class="btn btn-warning btn-lg me-2" asp-action="Edit" asp-route-id="@item.Id"><i class="fa-solid fa-pen-to-square"></i></a>
+
+                    <a class="btn btn-danger btn-lg " asp-action="Delete" asp-route-id="@item.Id"><i class="fa-solid fa-trash"></i></a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

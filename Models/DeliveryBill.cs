@@ -5,6 +5,7 @@ namespace QuanLyKhoBiaNGK.Models
 {
     public class DeliveryBill
     {
+
         public int Id { get; set; }
 
         [Display(Name = "Ngày")]
@@ -31,5 +32,6 @@ namespace QuanLyKhoBiaNGK.Models
         [Display(Name = "Khách Hàng")]
         public Customer? Customer { get; set; }
         public List<DeliveryBillItem>? DeliveryBillItem { get; set; }
+
     }
 }

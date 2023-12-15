@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using QuanLyKhoBiaNGK.Data;
 
@@ -11,9 +12,10 @@ using QuanLyKhoBiaNGK.Data;
 namespace QuanLyKhoBiaNGK.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231122142222_Add_User")]
+    partial class Add_User
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -192,13 +194,17 @@ namespace QuanLyKhoBiaNGK.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("FullName")
+                    b.Property<string>("FirstName")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<bool?>("Gender")
                         .HasColumnType("bit");
+
+                    b.Property<string>("LastName")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Phone")
                         .HasMaxLength(20)
@@ -207,76 +213,6 @@ namespace QuanLyKhoBiaNGK.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Customers");
-                });
-
-            modelBuilder.Entity("QuanLyKhoBiaNGK.Models.DeliveryBill", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Note")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PriceType")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("SubTotal")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Total")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CustomerId");
-
-                    b.ToTable("DeliveryBill");
-                });
-
-            modelBuilder.Entity("QuanLyKhoBiaNGK.Models.DeliveryBillItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("Amount")
-                        .HasColumnType("int");
-
-                    b.Property<int>("DeliveryBillId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Price")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Unit")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DeliveryBillId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("DeliveryBillItems");
                 });
 
             modelBuilder.Entity("QuanLyKhoBiaNGK.Models.DetailReceived", b =>
@@ -545,36 +481,6 @@ namespace QuanLyKhoBiaNGK.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("QuanLyKhoBiaNGK.Models.DeliveryBill", b =>
-                {
-                    b.HasOne("QuanLyKhoBiaNGK.Models.Customer", "Customer")
-                        .WithMany()
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Customer");
-                });
-
-            modelBuilder.Entity("QuanLyKhoBiaNGK.Models.DeliveryBillItem", b =>
-                {
-                    b.HasOne("QuanLyKhoBiaNGK.Models.DeliveryBill", "DeliveryBill")
-                        .WithMany("DeliveryBillItem")
-                        .HasForeignKey("DeliveryBillId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("QuanLyKhoBiaNGK.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("DeliveryBill");
-
-                    b.Navigation("Product");
-                });
-
             modelBuilder.Entity("QuanLyKhoBiaNGK.Models.DetailReceived", b =>
                 {
                     b.HasOne("QuanLyKhoBiaNGK.Models.ReceivedBill", "ReceivedBill")
@@ -619,11 +525,6 @@ namespace QuanLyKhoBiaNGK.Data.Migrations
             modelBuilder.Entity("QuanLyKhoBiaNGK.Models.Category", b =>
                 {
                     b.Navigation("Products");
-                });
-
-            modelBuilder.Entity("QuanLyKhoBiaNGK.Models.DeliveryBill", b =>
-                {
-                    b.Navigation("DeliveryBillItem");
                 });
 
             modelBuilder.Entity("QuanLyKhoBiaNGK.Models.ReceivedBill", b =>
