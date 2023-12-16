@@ -24,7 +24,7 @@ namespace QuanLyKhoBiaNGK.Data
         public virtual DbSet<DetailReceived> DetailReceiveds { get; set; }
         public virtual DbSet<DeliveryBill> DeliveryBills { get; set; }
         public virtual DbSet<DeliveryBillItem> DeliveryBillItems { get; set; }
-        public DbSet<QuanLyKhoBiaNGK.Models.DeliveryBill>? DeliveryBill { get; set; }
+        public virtual DbSet<DeliveryBill> DeliveryBill { get; set; }
 
     }
 }

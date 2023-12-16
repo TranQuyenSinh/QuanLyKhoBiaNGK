@@ -97,24 +97,11 @@ namespace QuanLyKhoBiaNGK.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateDetail(int billId, DeliveryBillItem model)
         {
-            /*var bill = await _context.DeliveryBills.FindAsync(billId);
-            if (bill == null) return NotFound();
-
-            model.DeliveryBillId = billId;
-            model.Amount = model.Price * model.Quantity;
-            
-            _context.Add(model);
-
-
-            bill.SubTotal += model.Amount;
-            bill.Total = int.Parse((bill.SubTotal * 1.1).ToString());
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction(nameof(Details), new { Id = billId });*/
-
             var bill = await _context.DeliveryBills.FindAsync(billId);
             if (bill == null) return NotFound();
 
+            var product = await _context.Products.FindAsync(model.ProductId);
+            if (product == null) return NotFound();
             model.DeliveryBillId = billId;
             model.Amount = model.Price * model.Quantity;
 
@@ -128,6 +115,8 @@ namespace QuanLyKhoBiaNGK.Controllers
             bill.SubTotal = currentSubTotal + model.Amount;
             bill.Total = (int)(bill.SubTotal * 1.1);
 
+            product.Inventory -= model.Quantity;
+
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Details), new { Id = billId });
@@ -138,15 +127,16 @@ namespace QuanLyKhoBiaNGK.Controllers
         public async Task<IActionResult> DeleteDetail(int? detailId, string returnUrl)
         {
             var detail = await _context.DeliveryBillItems
-                .Include(m => m.DeliveryBill).FirstOrDefaultAsync(X=>X.Id==detailId);
-      
-                                ;
+                .Include(m => m.DeliveryBill).Include(x => x.Product).FirstOrDefaultAsync(X => X.Id == detailId);
+
+
             if (detail == null)
             {
                 return NotFound("ko thay detail");
             }
             detail.DeliveryBill.SubTotal -= detail.Amount;
             detail.DeliveryBill.Total = int.Parse((detail.DeliveryBill.SubTotal * 1.1).ToString());
+            detail.Product.Inventory += detail.Quantity;
             _context.Remove(detail);
             await _context.SaveChangesAsync();
 
@@ -235,19 +225,23 @@ namespace QuanLyKhoBiaNGK.Controllers
             {
                 return Problem("Entity set 'ApplicationDbContext.DeliveryBill'  is null.");
             }
-            var deliveryBill = await _context.DeliveryBill.FindAsync(id);
+            var deliveryBill = await _context.DeliveryBill
+                                .Include(x => x.DeliveryBillItem)
+                                .ThenInclude(x => x.Product)
+                                .FirstOrDefaultAsync(x => x.Id == id);
             if (deliveryBill != null)
             {
+                deliveryBill.DeliveryBillItem.ToList().ForEach(detail => detail.Product.Inventory += detail.Quantity);
                 _context.DeliveryBill.Remove(deliveryBill);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool DeliveryBillExists(int id)
         {
-          return (_context.DeliveryBill?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.DeliveryBill?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

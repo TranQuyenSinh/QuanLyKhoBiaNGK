@@ -73,7 +73,7 @@ namespace QuanLyKhoBiaNGK.Controllers
         {
             _context.Add(receivedBill);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Details), new {Id = receivedBill.Id });
+            return RedirectToAction(nameof(Details), new { Id = receivedBill.Id });
         }
 
         // GET: ReceivedBills/CreateDetail
@@ -97,9 +97,14 @@ namespace QuanLyKhoBiaNGK.Controllers
             var bill = await _context.ReceivedBills.FindAsync(billId);
             if (bill == null) return NotFound();
 
+            var product = await _context.Products.FindAsync(model.ProductId);
+            if (product == null) return NotFound();
+
             model.BillId = billId;
             model.Amount = model.Price * model.Quantity;
             _context.Add(model);
+
+            product.Inventory += model.Quantity;
 
             bill.Total += model.Amount;
             await _context.SaveChangesAsync();
@@ -112,23 +117,19 @@ namespace QuanLyKhoBiaNGK.Controllers
             var detail = await _context.DetailReceiveds
                                 .Where(x => x.Id == detailId)
                                 .Include(x => x.ReceivedBill)
+                                .Include(x => x.Product)
                                 .FirstOrDefaultAsync();
             if (detail == null)
-            {
                 return NotFound();
-            }
 
             detail.ReceivedBill.Total -= detail.Amount;
+            detail.Product.Inventory -= detail.Quantity;
 
             _context.Remove(detail);
             await _context.SaveChangesAsync();
 
             return Redirect(returnUrl);
         }
-
-    
-
-
 
         // GET: ReceivedBills/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -213,9 +214,14 @@ namespace QuanLyKhoBiaNGK.Controllers
             {
                 return Problem("Entity set 'ApplicationDbContext.ReceivedBill'  is null.");
             }
-            var receivedBill = await _context.ReceivedBills.FindAsync(id);
+            var receivedBill = await _context.ReceivedBills
+                            .Include(x => x.DetailReceiveds)
+                            .ThenInclude(x => x.Product)
+                            .FirstOrDefaultAsync(x => x.Id == id);
+
             if (receivedBill != null)
             {
+                receivedBill.DetailReceiveds.ToList().ForEach(detail => detail.Product.Inventory -= detail.Quantity);
                 _context.ReceivedBills.Remove(receivedBill);
             }
 
