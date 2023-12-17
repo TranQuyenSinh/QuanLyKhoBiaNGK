@@ -83,7 +83,7 @@
 				</li>
 
 				<li class="sidebar-item @(ViewData["ActivePage"]?.ToString() == "profit" ? "active":"")">
-					<a class="sidebar-link" href="ui-cards.html">
+					<a class="sidebar-link" asp-controller="Statistics" asp-action="Profit">
 						<i class="fa-solid fa-sack-dollar"></i>
 						<span class="align-middle">Thống kê lợi nhuận</span>
 					</a>

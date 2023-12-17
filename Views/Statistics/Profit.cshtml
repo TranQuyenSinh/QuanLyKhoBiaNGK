@@ -1,0 +1,99 @@
+@model IEnumerable<QuanLyKhoBiaNGK.Models.Product>
+@{
+    ViewData["Title"] = "Thống kê tồn kho";
+    ViewData["ActivePage"] = "profit";
+    var today = DateTime.Now;
+
+    // Default: Ngày đầu tiên của tháng
+    var fromDate = (DateTime)(ViewBag.FromDate ?? new DateTime(today.Year, today.Month, 1));
+
+    // Default: Ngày hiện tại
+    var toDate = (DateTime)(ViewBag.ToDate ?? today);
+}
+<h1>Thống kê</h1>
+    <div class="d-flex align-items-center gap-2">
+        <span>Từ</span>
+    <input type="date" class="form-control" id="fromDate" style="width: 150px" name="fromDate">
+    <span>đến</span>
+    <input type="date" class="form-control" id="toDate" style="width: 150px" name="toDate">
+    <button type="button" id="selectDateBtn" class="btn btn-primary"><i class="fas fa-search"></i></button>
+    </div>
+<hr>
+
+<ul class="nav nav-tabs nav-justified mb-3" id="ex1" role="tablist">
+  <li class="nav-item" role="presentation">
+    <a
+      class="nav-link active"
+      data-bs-toggle="tab"
+      href="#tabs-content1"
+      role="tab"
+      >
+      <i class="fa-solid fa-coins me-2"></i>
+      Doanh số bán hàng</a
+    >
+  </li>
+  <li class="nav-item" role="presentation">
+    <a
+      class="nav-link"
+      data-bs-toggle="tab"
+      href="#tabs-content2"
+      role="tab"
+      >
+      <i class="fa-solid fa-dolly me-2"></i>Nhập hàng</a
+    >
+  </li>
+  <li class="nav-item" role="presentation">
+    <a
+      class="nav-link"
+      id="ex3-tab-3"
+      data-bs-toggle="tab"
+      href="#tabs-content3"
+      role="tab"
+      >
+      <i class="fa-solid fa-users me-2"></i>Khách hàng</a
+    >
+  </li>
+</ul>
+
+<div class="tab-content" id="ex2-content">
+  <div
+    class="tab-pane fade show active"
+    id="tabs-content1"
+    role="tabpanel"
+  >
+   <partial name="/Views/Statistics/Shared/_ProfitPartial.cshtml" />
+  </div>
+  <div class="tab-pane fade" id="tabs-content2" role="tabpanel">
+   <partial name="/Views/Statistics/Shared/_ImportPartial.cshtml" />
+  </div>
+  <div class="tab-pane fade" id="tabs-content3" role="tabpanel">
+   <partial name="/Views/Statistics/Shared/_CustomerPartial.cshtml" />
+  </div>
+</div>
+
+@section Scripts {
+    <script src="~/lib/chart/chart.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            let fromDate = new Date("@fromDate.ToString("yyyy-MM-dd")");
+            let toDate = new Date("@(toDate.ToString("yyyy-MM-dd"))");
+            $("#fromDate").val(fromDate.toISOString().slice(0, 10));
+            $("#toDate").val(toDate.toISOString().slice(0, 10));
+
+            $("#selectDateBtn").on('click', function () {
+              var fromDate = $("#fromDate").val();
+              var toDate = $("#toDate").val();
+
+              StartDrawImportChart(fromDate, toDate);
+              StartProfitDrawChart(fromDate, toDate);
+              StartDrawCustomerChart(fromDate, toDate)
+             })
+
+            $("#selectDateBtn").click()
+
+        });
+    </script>
+
+
+}

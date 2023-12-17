@@ -1,0 +1,38 @@
+<div class="row">
+    <div class="col-md-12">
+        <h4>Số lượng bán ra của tất cả sản phẩm</h4>
+        <table id="customer-bill-count-table" class="table table-striped table-bordered" style="border: 2px solid grey">
+            <thead class="text-light bg-info">
+                <th>Khách hàng</th>
+                <th>Tổng số đơn</th>
+                <th>Tổng giá trị đơn</th>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+
+<script>
+    const customerBillCountContainer = $("#customer-bill-count-table tbody")
+    function StartDrawCustomerChart(fromDate, toDate) {
+        $.get("/Statistics/GetReportCustomerBillCount?fromDate=" + fromDate + "&toDate=" + toDate, function(res) {
+            res.sort((a, b) => b.totalPrice - a.totalPrice);
+            GenerateCustomerTable(res);
+        });
+    }
+
+    function GenerateCustomerTable(res) {
+        let html = '';
+        res.forEach(item => {
+            html+= `
+                <tr>
+                    <td>${item.customerName}</td>
+                    <td>${item.billCount}</td>
+                    <td>${formatPrice(item.totalPrice)}</td>
+                </tr>
+            `    
+        })
+        customerBillCountContainer.html(html)
+    }
+</script>

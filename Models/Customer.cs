@@ -9,7 +9,7 @@ namespace QuanLyKhoBiaNGK.Models
         public int Id { get; set; }
         [StringLength(50)]
         [DisplayName("Họ và Tên")]
-        public string FullName{ get; set; }
+        public string FullName { get; set; }
         [DataType(DataType.Date)]
         [DisplayName("Ngày Sinh")]
         public Nullable<System.DateTime> Birth { get; set; }
@@ -26,5 +26,6 @@ namespace QuanLyKhoBiaNGK.Models
 
         public string? Email { get; set; }
         //public virtual ICollection<tb_PHIEUBANHANG> tb_PHIEUBANHANG { get; set; }
+        public virtual ICollection<DeliveryBill> Bills { get; set; }
     }
 }

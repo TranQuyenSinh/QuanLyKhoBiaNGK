@@ -5,3 +5,18 @@ td {
 tr.clickable-row {
    cursor: pointer;
 }
+
+.nav-tabs {
+   background-color: #fff;
+   margin-bottom: 0 !important;
+}
+
+.tab-content {
+   background-color: #fff;
+   padding: 12px;
+}
+
+ul.nav-tabs .nav-link.active {
+   border-bottom: 4px solid blue !important;
+   background: aliceblue !important;
+}

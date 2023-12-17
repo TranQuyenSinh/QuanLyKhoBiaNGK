@@ -9,6 +9,10 @@
     {
       "library": "multiple-select@1.2.3",
       "destination": "wwwroot/lib/multiple-select"
+    },
+    {
+      "library": "Chart.js@4.4.1",
+      "destination": "wwwroot/lib/chart"
     }
   ]
 }

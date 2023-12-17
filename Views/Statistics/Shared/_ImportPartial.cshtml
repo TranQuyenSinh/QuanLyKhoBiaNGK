@@ -1,0 +1,70 @@
+<div class="row">
+    <div class="col-md-6">
+        <table id="import-table" class="table table-striped table-bordered"  style="border: 2px solid grey">
+            <thead class="text-light bg-info">
+                <th>Sản phẩm</th>
+                <th>Đơn vị tính</th>
+                <th>Tồn kho hiện tại</th>
+                <th>Giá nhập</th>
+                <th>Tổng lượng nhập</th>
+                <th>Thành tiền</th>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <div class="col-md-6">
+        <div id="import-chart"></div>
+    </div>
+</div>
+
+<script>
+    const importChartContainer = $('#import-chart');
+    const importTableContainer = $("#import-table tbody")
+
+    function StartDrawImportChart(fromDate, toDate) {
+        $.get("/Statistics/GetReportImport?fromDate=" + fromDate + "&toDate=" + toDate, function(res) {
+            res.data?.sort((a, b) => b.totalQuantity - a.totalQuantity)
+            DrawImportChart(res);
+            GenerateImportTable(res);
+        });
+
+    }
+
+    function DrawImportChart(res) {
+        let importBarChart = createCanvasWithId("import-bar-chart")
+        importChartContainer.html(importBarChart)
+
+        let chartData = {
+            labels: [],
+            data: []
+        }
+        res.data.forEach(item => {
+            chartData.labels.push(item.productName)
+            chartData.data.push(item.totalQuantity)
+        })
+       
+        new Chart(importBarChart, {type: 'bar',data: {labels:chartData.labels,datasets: [{label: "Số lượng",data:chartData.data,backgroundColor: '#ffc858',borderWidth: 1}]}});
+    }
+
+    function GenerateImportTable(res) {
+        let html = res.data.map(item => {
+            return `
+                <tr>
+                    <td>${item.productName}</td>
+                    <td>${item.unit}</td>
+                    <td>${item.currentInventory}</td>
+                    <td>${formatPrice(item.purchasePrice)}</td>
+                    <td>${item.totalQuantity}</td>
+                    <td>${formatPrice(item.amount)}</td>
+                </tr>
+            `
+        }).join('')
+        html+=`
+                <tr style="border-top: 2px solid grey">
+                    <td colspan="2" class="fw-bold fs-4">Tổng chi</td>
+                    <td colspan="4" class="text-success fw-bold text-end fs-3">${formatPrice(res.totalAmount)} đ</td>
+                </tr>
+            `
+        importTableContainer.html(html);
+    }
+</script>

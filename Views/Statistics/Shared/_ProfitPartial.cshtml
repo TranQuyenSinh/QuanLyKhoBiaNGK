@@ -1,0 +1,142 @@
+<div class="row">
+    <div class="col-md-12 mb-5">
+        <h4 class="mt-2">Lợi nhuận trên từng sản phẩm</h4>
+        <hr>
+        <table id="profit-table" class="table table-striped table-bordered" style="border: 2px solid grey">
+            <thead class="text-light bg-info">
+                <th>Sản phẩm</th>
+                <th>Đơn vị tính</th>
+                <th>Giá nhập</th>
+                <th>Giá bán</th>
+                <th>Tổng lượng bán</th>
+                <th>Vốn</th>
+                <th>Doanh thu bán hàng</th>
+                <th>Lợi nhuận</th>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <div class="col-md-6">
+        <h4>Doanh thu từng ngày</h4>
+        <hr>
+        <div id="profit-line-chart-container"></div>
+    </div>
+    <div class="col-md-6">
+        <h4>Số lượng bán ra của tất cả sản phẩm</h4>
+        <hr>
+        <div id="profit-bar-chart-container"></div>
+
+        <h4>Tỉ lệ các sản phẩm đã bán</h4>
+        <hr>
+        <div id="profit-pie-chart-container"></div>
+    </div>
+    
+</div>
+
+<script>
+    const barCanvasContainer = $('#profit-bar-chart-container');
+    const pieCanvasContainer = $('#profit-pie-chart-container');
+    const lineCanvasContainer = $('#profit-line-chart-container');
+    const profitTableContainer = $("#profit-table tbody")
+
+    function StartProfitDrawChart(fromDate, toDate) {
+        $.get("/Statistics/GetReportQuantity?fromDate=" + fromDate + "&toDate=" + toDate, function(res) {
+            res.data?.sort((a, b) => b.totalQuantity - a.totalQuantity)
+            DrawQuantityChart(res);
+            DrawQuantityPieChart(res);
+            GenerateQuantityTable(res);
+        });
+
+        $.get("/Statistics/GetProfitByDay?fromDate=" + fromDate + "&toDate=" + toDate, function(res) {
+            DrawLineChart(res);
+        });
+    }
+    function DrawQuantityChart(res) {
+        let barCanvas = createCanvasWithId("profit-bar-chart")
+        barCanvasContainer.html(barCanvas)
+
+        let chartData = {
+            labels: [],
+            data: []
+        }
+        res.data.forEach(item => {
+            chartData.labels.push(item.productName)
+            chartData.data.push(item.totalQuantity)
+        })
+
+        new Chart(barCanvas, {type: 'bar',data: {labels:chartData.labels,datasets: [{label: "Số lượng",data:chartData.data,backgroundColor: '#9BD0F5',borderWidth: 1}]}});
+    }
+
+    function GenerateQuantityTable(res) {
+        res.data.sort((a, b) => b.totalQuantity - a.totalQuantity)
+        let html = res.data.map(item => {
+            return `
+                <tr>
+                    <td>${item.productName}</td>
+                    <td>${item.unit}</td>
+                    <td>${formatPrice(item.purchasePrice)}</td>
+                    <td>${formatPrice(item.retailPrice)}</td>
+                    <td>${item.totalQuantity}</td>
+                    <td>${formatPrice(item.von)}</td>
+                    <td>${formatPrice(item.doanhThu)}</td>
+                    <td>${formatPrice(item.profit)}</td>
+                </tr>
+            `
+        }).join('')
+        html+=`
+                <tr style="border-top: 2px solid grey">
+                    <td colspan="2" class="fw-bold fs-4">Tổng thu nhập</td>
+                    <td colspan="6" class="text-success fw-bold text-end fs-3">${formatPrice(res.totalProfit)} đ</td>
+                </tr>
+            `
+        profitTableContainer.html(html);
+    }
+   
+    function DrawQuantityPieChart(res) {
+        let pieCanvas = createCanvasWithId("profit-pie-chart")
+        pieCanvasContainer.html(pieCanvas)
+
+        let chartData = {
+            labels: [],
+            data: []
+        }
+
+        res.data.forEach(item => {
+            if (item.totalQuantity!== 0) {
+                chartData.labels.push(item.productName)
+                chartData.data.push(item.totalQuantity)
+            }
+        })
+
+        new Chart(pieCanvas, {type: 'pie',data: {labels:chartData.labels,datasets: [{data:chartData.data,backgroundColor: randomHexColors(chartData.labels.length),borderWidth: 1}]}});
+    }
+
+    function DrawLineChart(res) {
+        let lineCanvas = createCanvasWithId("profit-line-chart")
+        lineCanvasContainer.html(lineCanvas)
+
+        let chartData = {
+            labels: [],
+            data: []
+        }
+        res.forEach(item => {
+            chartData.labels.push(item.date)
+            chartData.data.push(Math.floor(item.profitInDay/1000))
+        })
+
+        new Chart(
+            lineCanvas, 
+            {
+                type: 'line',
+                data: {
+                    labels:chartData.labels,
+                    datasets: [
+                        {label: "Doanh thu theo ngày", data:chartData.data,backgroundColor: 'rgba(0,0,0,0)',borderColor: "#36a2eb",borderWidth: 2}
+                    ]
+                },
+                
+            },
+            
+        );
+    }
+</script>
