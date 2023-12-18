@@ -83,7 +83,7 @@ namespace QuanLyKhoBiaNGK.Controllers
                 var totalProfitInDay = _context.DeliveryBills
                 .ToList()
                 .Where(x => x.Date.ToString("dd/MM/yyyy") == d.ToString("dd/MM/yyyy"))
-                .Sum(bill => bill.SubTotal);
+                .Sum(bill => bill.Total);
 
                 data.Add(new
                 {

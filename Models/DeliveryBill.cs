@@ -18,8 +18,8 @@ namespace QuanLyKhoBiaNGK.Models
 
         public int CustomerId { get; set; }
 
-       
-        [Display(Name = "Tổng Tiền Sau Thuế")]
+
+        [Display(Name = "Tổng Tiền")]
         public int Total { get; set; } = 0;
 
 
@@ -27,8 +27,6 @@ namespace QuanLyKhoBiaNGK.Models
         [Display(Name = "Loại Gía")]
         public bool PriceType { get; set; }
 
-        [Display(Name = "Tiền Sản Phẩm")]
-        public int SubTotal { get; set; } = 0;
         [Display(Name = "Khách Hàng")]
         public Customer? Customer { get; set; }
         public List<DeliveryBillItem>? DeliveryBillItem { get; set; }

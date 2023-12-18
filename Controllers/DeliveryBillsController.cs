@@ -104,17 +104,9 @@ namespace QuanLyKhoBiaNGK.Controllers
             if (product == null) return NotFound();
             model.DeliveryBillId = billId;
             model.Amount = model.Price * model.Quantity;
-
             _context.Add(model);
 
-            // Lấy giá trị hiện tại của SubTotal từ cơ sở dữ liệu
-            var currentSubTotal = await _context.DeliveryBillItems
-                .Where(item => item.DeliveryBillId == billId)
-                .SumAsync(item => item.Amount);
-
-            bill.SubTotal = currentSubTotal + model.Amount;
-            bill.Total = (int)(bill.SubTotal * 1.1);
-
+            bill.Total += model.Amount;
             product.Inventory -= model.Quantity;
 
             await _context.SaveChangesAsync();
@@ -134,8 +126,7 @@ namespace QuanLyKhoBiaNGK.Controllers
             {
                 return NotFound("ko thay detail");
             }
-            detail.DeliveryBill.SubTotal -= detail.Amount;
-            detail.DeliveryBill.Total = int.Parse((detail.DeliveryBill.SubTotal * 1.1).ToString());
+            detail.DeliveryBill.Total -= detail.Amount;
             detail.Product.Inventory += detail.Quantity;
             _context.Remove(detail);
             await _context.SaveChangesAsync();
@@ -166,7 +157,7 @@ namespace QuanLyKhoBiaNGK.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Date,Note,CustomerId")] DeliveryBill deliveryBill)
+        public async Task<IActionResult> Edit(int id, DeliveryBill deliveryBill)
         {
             if (id != deliveryBill.Id)
             {
@@ -177,7 +168,11 @@ namespace QuanLyKhoBiaNGK.Controllers
             {
                 try
                 {
-                    _context.Update(deliveryBill);
+                    var bill = _context.DeliveryBills.Find(id);
+                    bill.Note = deliveryBill.Note;
+                    bill.CustomerId = deliveryBill.CustomerId;
+                    bill.Total = deliveryBill.Total;
+                    bill.Date = deliveryBill.Date;
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
