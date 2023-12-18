@@ -30,7 +30,7 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr class="clickable-row" data-href="@Url.Action("Details", new { Id = item.Id })">
+            <tr style="cursor: pointer;" class="clickable-row" data-href="@Url.Action("Details", new { Id = item.Id })">
                 <td>
                     @Html.DisplayFor(modelItem => item.Date)
                 </td>

@@ -1,41 +1,47 @@
 ﻿@model QuanLyKhoBiaNGK.Models.DeliveryBill
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Tạo hóa đơn xuất hàng";
 }
 
-<h1>Create</h1>
 
-<h4>DeliveryBill</h4>
+<div class=" my-2">
+    <a class="btn btn-secondary" asp-action="Index">
+        <i class="fa-solid fa-chevron-left me-2"></i>
+        Quay lại
+    </a>
+</div>
+<h4>@ViewData["Title"]</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
+ <form asp-action="Create">
             <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="row">
+        <div class="col-md-6">
             <div class="form-group">
                 <label asp-for="Date" class="control-label"></label>
                 <input asp-for="Date" class="form-control" />
                 <span asp-validation-for="Date" class="text-danger"></span>
             </div>
+        </div>
+        <div class="col-md-6">
             <div class="form-group">
                 <label asp-for="Note" class="control-label"></label>
                 <input asp-for="Note" class="form-control" />
                 <span asp-validation-for="Note" class="text-danger"></span>
             </div>
+            </div>
+        <div class="col-md-12">
             <div class="form-group">
                 <label asp-for="Customer" class="control-label"></label>
                 <select asp-for="CustomerId" class ="form-control" asp-items="ViewBag.CustomerId"></select>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
             </div>
-        </form>
+            <div class="form-group my-2">
+            <input type="submit" value="Tạo hóa đơn" id="btnSubmit" class="btn btn-primary float-end" />
+        </div>
     </div>
-</div>
+</form>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
