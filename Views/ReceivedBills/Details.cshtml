@@ -33,7 +33,7 @@
                     @Html.DisplayNameFor(model => model.Total)
                 </dt>
                 <dd class="col-sm-7">
-                    @Html.DisplayFor(model => model.Total)
+                    @Model.Total.ToString("n0")
                 </dd>
             </div>
         </div>
@@ -66,9 +66,9 @@
                             <td>@(++i)</td>
                             <td>@item.Product.Name</td>
                             <td>@item.Unit</td>
-                            <td>@item.Price</td>
+                            <td>@item.Price.ToString("n0")</td>
                             <td>@item.Quantity</td>
-                            <td>@item.Amount</td>
+                            <td>@item.Amount.ToString("n0")</td>
                             <td><a asp-action="DeleteDetail" asp-route-detailId="@item.Id" asp-route-returnUrl="@ViewBag.returnUrl" class="btn btn-sm btn-danger"><i class="fas fa-times"></i></a></td>
                         </tr>
                     }

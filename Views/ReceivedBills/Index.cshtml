@@ -38,7 +38,7 @@
                     @Html.DisplayFor(modelItem => item.Supplier.FullName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Total)
+                    @item.Total.ToString("n0")
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Note)

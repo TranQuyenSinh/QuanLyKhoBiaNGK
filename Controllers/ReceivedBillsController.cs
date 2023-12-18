@@ -155,7 +155,7 @@ namespace QuanLyKhoBiaNGK.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Date,Note,SupplierId")] ReceivedBill receivedBill)
+        public async Task<IActionResult> Edit(int id, ReceivedBill receivedBill)
         {
             if (id != receivedBill.Id)
             {
@@ -166,7 +166,11 @@ namespace QuanLyKhoBiaNGK.Controllers
             {
                 try
                 {
-                    _context.Update(receivedBill);
+                    var bill = _context.ReceivedBills.Find(id);
+                    bill.Note = receivedBill.Note;
+                    bill.SupplierId = receivedBill.SupplierId;
+                    bill.Total = receivedBill.Total;
+                    bill.Date = receivedBill.Date;
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

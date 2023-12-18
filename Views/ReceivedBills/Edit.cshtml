@@ -13,6 +13,7 @@
         <form asp-action="Edit">
             <div asp-validation-summary="All" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Total" />
             <div class="form-group mt-2">
                 <label asp-for="Date" class="control-label"></label>
                 <input asp-for="Date" class="form-control" />
@@ -35,4 +36,3 @@
         </form>
     </div>
 </div>
-
