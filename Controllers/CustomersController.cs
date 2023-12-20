@@ -66,7 +66,7 @@ namespace QuanLyKhoBiaNGK.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,Birth,Gender,Address,Phone,Email")] Customer customer)
+        public async Task<IActionResult> Create([Bind("Id,FullName,Birth,Gender,Address,Phone,Email")] Customer customer)
         {
             if (ModelState.IsValid)
             {
@@ -98,7 +98,7 @@ namespace QuanLyKhoBiaNGK.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,Birth,Gender,Address,Phone,Email")] Customer customer)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,FullName,Birth,Gender,Address,Phone,Email")] Customer customer)
         {
             if (id != customer.Id)
             {

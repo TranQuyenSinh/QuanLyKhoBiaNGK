@@ -26,6 +26,6 @@ namespace QuanLyKhoBiaNGK.Models
 
         public string? Email { get; set; }
         //public virtual ICollection<tb_PHIEUBANHANG> tb_PHIEUBANHANG { get; set; }
-        public virtual ICollection<DeliveryBill> Bills { get; set; }
+        public virtual ICollection<DeliveryBill>? Bills { get; set; }
     }
 }
