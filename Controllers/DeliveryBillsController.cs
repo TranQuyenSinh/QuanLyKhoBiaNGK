@@ -148,7 +148,7 @@ namespace QuanLyKhoBiaNGK.Controllers
             {
                 return NotFound();
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Id", deliveryBill.CustomerId);
+            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "FullName", deliveryBill.CustomerId);
             return View(deliveryBill);
         }
 
@@ -188,7 +188,7 @@ namespace QuanLyKhoBiaNGK.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Id", deliveryBill.CustomerId);
+            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "FullName", deliveryBill.CustomerId);
             return View(deliveryBill);
         }
 
